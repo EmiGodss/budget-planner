@@ -68,6 +68,15 @@
       margin: 0;
     }
 
+    input[type="date"] {
+      color-scheme: dark;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+      filter: invert(0.8) sepia(1) saturate(3) hue-rotate(150deg);
+    }
+
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: #0d1424; border-radius: 4px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
@@ -146,7 +155,10 @@
     <!-- PAYDAY NAVIGATION TABS -->
     <div class="glass-card p-2 rounded-2xl shadow-sm">
       <div class="flex flex-wrap items-center gap-1.5">
-        <button onclick="switchTab('dec5')" id="tab-dec5" class="tab-btn active px-3.5 py-2 text-xs font-bold rounded-xl text-slate-300 hover:text-white hover:bg-slate-800">
+        <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn active px-3.5 py-2 text-xs font-bold rounded-xl text-cyan-200 hover:text-white border border-cyan-500/30 bg-cyan-950/30">
+          Overview (15th &amp; 30th)
+        </button>
+        <button onclick="switchTab('dec5')" id="tab-dec5" class="tab-btn px-3.5 py-2 text-xs font-bold rounded-xl text-slate-300 hover:text-white hover:bg-slate-800">
           1. Dec 5 Sahod (You)
         </button>
         <button onclick="switchTab('dec15')" id="tab-dec15" class="tab-btn px-3.5 py-2 text-xs font-bold rounded-xl text-slate-300 hover:text-white hover:bg-slate-800">
@@ -168,9 +180,172 @@
     </div>
 
     <!-- =========================================================
+         VIEW 0: SIMPLE PH KINSENAS OVERVIEW (15th/17th & 31st/2nd)
+         ========================================================= -->
+    <div id="overviewView" class="space-y-5">
+      <!-- Intro Banner -->
+      <div class="glass-card p-5 rounded-2xl shadow-sm border-l-4 border-l-cyan-400">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-cyan-950/80 text-cyan-300 border border-cyan-800/60">
+              Philippine Payroll &amp; Kinsenas Snapshot
+            </span>
+            <h2 id="overviewHeading" class="text-lg sm:text-xl font-extrabold text-white mt-1.5">December Cashflow Overview</h2>
+            <p class="text-xs text-slate-400 mt-0.5">
+              Simpleng buod ng matitirang pera sa kamay base sa dalawang bagsak ng sweldo sa Pilipinas (15th/17th at 30th/31st–2nd ng susunod na buwan).
+            </p>
+          </div>
+          <div class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-left sm:text-right">
+            <span class="text-[11px] text-slate-400 block">Kabuuang Matitira sa Buong Buwan</span>
+            <span id="ovMonthNetTotal" class="text-xl font-extrabold text-emerald-400">₱0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 MAIN KINSENAS CARDS -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+
+        <!-- CARD 1: BY 15TH OR 17TH OF THE MONTH -->
+        <div class="glass-card p-5 rounded-2xl shadow-sm border-t-4 border-t-cyan-400 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span id="ov1Badge" class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-700/60">
+                1st Kinsenas Window
+              </span>
+              <span id="ov1DateWindow" class="text-xs font-semibold text-slate-400">Dec 15 – Dec 17 Posting</span>
+            </div>
+            <h3 id="ov1Title" class="text-lg font-extrabold text-white mt-2">Matitirang Pera by Dec 15 or 17</h3>
+            <p class="text-xs text-slate-400 mt-0.5">
+              Pinagsamang <strong class="text-slate-200">5th Sahod (You)</strong> + <strong class="text-slate-200">15th Sahod (Husband)</strong> (kasama ang allowance kung ma-delay ang bank clearing hanggang 17th).
+            </p>
+
+            <!-- Big Net Cash Result -->
+            <div class="my-4 p-4 rounded-xl bg-slate-950 border border-cyan-500/30 flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <span class="text-[11px] uppercase tracking-wider font-bold text-cyan-300 block">Net Cash in Hand by 15th / 17th</span>
+                <div id="ov1NetCash" class="text-3xl sm:text-4xl font-extrabold text-white mt-0.5">₱0.00</div>
+              </div>
+              <div class="text-left sm:text-right">
+                <span id="ov1StatusPill" class="inline-block text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-700/60">
+                  Safe Cashflow
+                </span>
+                <span id="ov1DailyBudget" class="block text-xs font-bold text-amber-300 mt-1.5">₱0.00 / day (15 days)</span>
+              </div>
+            </div>
+
+            <!-- Simple Breakdown -->
+            <div class="space-y-2 text-xs">
+              <div class="flex justify-between items-center py-1.5 border-b border-slate-800/80">
+                <span class="text-slate-400">Total Sahod (5th You + 15th Husband)</span>
+                <span id="ov1Salary" class="font-bold text-slate-100">₱0.00</span>
+              </div>
+              <div class="flex justify-between items-center py-1.5 border-b border-slate-800/80">
+                <span class="text-slate-400">Balik na Cash mula sa Reloan</span>
+                <span id="ov1Reloan" class="font-bold text-emerald-400">+₱0.00</span>
+              </div>
+              <div class="flex justify-between items-center py-1.5 border-b border-slate-800/80">
+                <span class="text-slate-400">Total Bills na Binayaran (1st–17th)</span>
+                <span id="ov1Bills" class="font-bold text-rose-400">-₱0.00</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-2 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400">
+            <span id="ov1Tip">Pang-gastos hanggang dumating ang 20th/30th sahod.</span>
+            <div class="flex gap-2">
+              <button onclick="switchTab('dec5')" class="text-cyan-300 hover:underline font-bold">Edit 5th →</button>
+              <button onclick="switchTab('dec15')" class="text-cyan-300 hover:underline font-bold">Edit 15th →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2: BY 31ST OR 2ND OF THE NEXT MONTH -->
+        <div class="glass-card p-5 rounded-2xl shadow-sm border-t-4 border-t-amber-400 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span id="ov2Badge" class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-700/60">
+                2nd Kinsenas / Month-End Window
+              </span>
+              <span id="ov2DateWindow" class="text-xs font-semibold text-slate-400">Dec 31 – Jan 2 Posting</span>
+            </div>
+            <h3 id="ov2Title" class="text-lg font-extrabold text-white mt-2">Matitirang Pera by Dec 31 or Jan 2</h3>
+            <p class="text-xs text-slate-400 mt-0.5">
+              Pinagsamang <strong class="text-slate-200">20th Sahod (You)</strong> + <strong class="text-slate-200">30th Sahod (Husband)</strong> (sakop ang month-end posting hanggang 2nd ng susunod na buwan).
+            </p>
+
+            <!-- Big Net Cash Result -->
+            <div class="my-4 p-4 rounded-xl bg-slate-950 border border-amber-500/30 flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <span id="ov2NetLabel" class="text-[11px] uppercase tracking-wider font-bold text-amber-300 block">Net Cash in Hand by 31st / 2nd</span>
+                <div id="ov2NetCash" class="text-3xl sm:text-4xl font-extrabold text-white mt-0.5">₱0.00</div>
+              </div>
+              <div class="text-left sm:text-right">
+                <span id="ov2StatusPill" class="inline-block text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-700/60">
+                  Safe Cashflow
+                </span>
+                <span id="ov2DailyBudget" class="block text-xs font-bold text-amber-300 mt-1.5">₱0.00 / day (16 days)</span>
+              </div>
+            </div>
+
+            <!-- Simple Breakdown -->
+            <div class="space-y-2 text-xs">
+              <div class="flex justify-between items-center py-1.5 border-b border-slate-800/80">
+                <span class="text-slate-400">Total Sahod (20th You + 30th Husband)</span>
+                <span id="ov2Salary" class="font-bold text-slate-100">₱0.00</span>
+              </div>
+              <div class="flex justify-between items-center py-1.5 border-b border-slate-800/80">
+                <span class="text-slate-400">Balik na Cash mula sa Reloan</span>
+                <span id="ov2Reloan" class="font-bold text-emerald-400">+₱0.00</span>
+              </div>
+              <div class="flex justify-between items-center py-1.5 border-b border-slate-800/80">
+                <span class="text-slate-400">Total Bills na Binayaran (18th–2nd)</span>
+                <span id="ov2Bills" class="font-bold text-rose-400">-₱0.00</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-2 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400">
+            <span id="ov2Tip">Pang-tawid hanggang sa unang sahod ng susunod na buwan.</span>
+            <div class="flex gap-2">
+              <button onclick="switchTab('dec20')" class="text-amber-300 hover:underline font-bold">Edit 20th →</button>
+              <button onclick="switchTab('dec30')" class="text-amber-300 hover:underline font-bold">Edit 30th →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REALISTIC PH HOUSEHOLD SUMMARY BAR -->
+      <div class="glass-card p-5 rounded-2xl shadow-sm">
+        <h3 class="text-sm font-bold text-white mb-3">Mabilisang Estado ng Pera at Utang</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+          <div class="slot-row p-3.5">
+            <span class="text-slate-400 block text-[11px]">Total Combined Sahod (Buong Buwan)</span>
+            <span id="ovTotalCombinedSalary" class="text-lg font-extrabold text-white mt-0.5 block">₱0.00</span>
+            <span class="text-[11px] text-slate-400 mt-0.5 block">4 cutoffs (You + Husband)</span>
+          </div>
+          <div class="slot-row p-3.5">
+            <span class="text-slate-400 block text-[11px]">Total Bills Paid (Buong Buwan)</span>
+            <span id="ovTotalCombinedBills" class="text-lg font-extrabold text-rose-400 mt-0.5 block">₱0.00</span>
+            <span class="text-[11px] text-slate-400 mt-0.5 block">Net of reloan proceeds</span>
+          </div>
+          <div class="slot-row p-3.5">
+            <span class="text-slate-400 block text-[11px]">13th Month &amp; Bonus Pool</span>
+            <span id="ovTotalBonusPool" class="text-lg font-extrabold text-amber-300 mt-0.5 block">₱0.00</span>
+            <button onclick="switchTab('bonus')" class="text-[11px] text-cyan-300 hover:underline font-semibold mt-0.5">Tingnan ang Bonus →</button>
+          </div>
+          <div class="slot-row p-3.5">
+            <span class="text-slate-400 block text-[11px]">Pending / Overdue Watchlist</span>
+            <span id="ovTotalOverdueWatch" class="text-lg font-extrabold text-rose-400 mt-0.5 block">₱0.00</span>
+            <button onclick="switchTab('overdue')" class="text-[11px] text-cyan-300 hover:underline font-semibold mt-0.5">Tingnan ang Overdue →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================
          VIEW A: SINGLE PAYDAY LIQUIDATION (5, 15, 20, OR 30)
          ========================================================= -->
-    <div id="paydayView" class="space-y-5">
+    <div id="paydayView" class="hidden space-y-5">
 
       <!-- TOP BAR: SALARY INPUT & REAL CASH IN HAND RESULT -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
@@ -190,7 +365,9 @@
               <label class="text-xs font-semibold text-slate-300 block mb-1">Net Sahod Pumasok (PHP)</label>
               <div class="relative">
                 <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold">₱</span>
-                <input type="number" id="salaryInput" oninput="updateSalary(this.value)"
+                <input type="text" inputmode="decimal" id="salaryInput"
+                  oninput="handleFormattedNumberInput(this, (val) => updateSalary(val))"
+                  onblur="finalizeFormattedInput(this)"
                   class="w-full bg-slate-950 border border-slate-700 focus:border-cyan-400 rounded-xl pl-8 pr-4 py-2.5 text-xl font-bold text-white outline-none transition" />
               </div>
             </div>
@@ -198,7 +375,7 @@
 
           <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
             <span class="text-slate-400">Cash from Reloans:</span>
-            <span id="reloanTotalBadge" class="font-bold text-emerald-400">+₱0</span>
+            <span id="reloanTotalBadge" class="font-bold text-emerald-400">+₱0.00</span>
           </div>
         </div>
 
@@ -211,12 +388,12 @@
             </div>
             <div class="text-left sm:text-right shrink-0">
               <span class="text-[11px] text-slate-400 block">Daily Budget</span>
-              <span id="dailyAllowance" class="text-sm font-bold text-amber-300">₱0 / day</span>
+              <span id="dailyAllowance" class="text-sm font-bold text-amber-300">₱0.00 / day</span>
             </div>
           </div>
 
           <div class="my-4 flex flex-wrap items-baseline gap-3">
-            <div id="netCashDisplay" class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">₱0</div>
+            <div id="netCashDisplay" class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">₱0.00</div>
             <span id="statusPill" class="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-700/60">
               Safe Cashflow
             </span>
@@ -226,15 +403,15 @@
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-3 border-t border-slate-800 text-xs">
             <div class="bg-slate-950 border border-slate-800 rounded-xl p-2.5 min-w-0">
               <span class="text-slate-400 block text-[11px]">Sahod</span>
-              <span id="formulaSalary" class="font-bold text-slate-100 text-sm">₱0</span>
+              <span id="formulaSalary" class="font-bold text-slate-100 text-sm">₱0.00</span>
             </div>
             <div class="bg-slate-950 border border-slate-800 rounded-xl p-2.5 min-w-0">
               <span class="text-slate-400 block text-[11px]">Total Binayaran</span>
-              <span id="formulaOutflow" class="font-bold text-rose-400 text-sm">-₱0</span>
+              <span id="formulaOutflow" class="font-bold text-rose-400 text-sm">-₱0.00</span>
             </div>
             <div class="bg-slate-950 border border-slate-800 rounded-xl p-2.5 min-w-0">
               <span class="text-slate-400 block text-[11px]">Balik sa Reloan</span>
-              <span id="formulaInflow" class="font-bold text-emerald-400 text-sm">+₱0</span>
+              <span id="formulaInflow" class="font-bold text-emerald-400 text-sm">+₱0.00</span>
             </div>
           </div>
         </div>
@@ -267,14 +444,14 @@
 
       <!-- SIMPLE REALISTIC SPLIT OF REMAINING CASH -->
       <div class="glass-card p-5 rounded-2xl shadow-sm min-w-0">
-        <h3 class="text-sm font-bold text-white mb-3">Saan Mapupunta ang Natirang <span id="splitHeadlineCash" class="text-cyan-300">₱0</span>?</h3>
+        <h3 class="text-sm font-bold text-white mb-3">Saan Mapupunta ang Natirang <span id="splitHeadlineCash" class="text-cyan-300">₱0.00</span>?</h3>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
           <div class="slot-row p-3.5 min-w-0">
             <div class="flex justify-between items-center gap-2 mb-1">
               <span class="text-slate-300 font-semibold">Pagkain, Bigas &amp; Pamasahe/Gas</span>
               <span class="text-[11px] text-cyan-300 font-bold shrink-0">60%</span>
             </div>
-            <div id="splitLiving" class="text-lg font-extrabold text-white">₱0</div>
+            <div id="splitLiving" class="text-lg font-extrabold text-white">₱0.00</div>
             <p class="text-[11px] text-slate-400 mt-1">Araw-araw na gastos bago ang next sahod</p>
           </div>
           <div class="slot-row p-3.5 min-w-0">
@@ -282,7 +459,7 @@
               <span class="text-slate-300 font-semibold">Savings / Handaan Fund</span>
               <span class="text-[11px] text-amber-300 font-bold shrink-0">25%</span>
             </div>
-            <div id="splitHoliday" class="text-lg font-extrabold text-amber-300">₱0</div>
+            <div id="splitHoliday" class="text-lg font-extrabold text-amber-300">₱0.00</div>
             <p class="text-[11px] text-slate-400 mt-1">Itabi para sa special expenses / goals</p>
           </div>
           <div class="slot-row p-3.5 min-w-0">
@@ -290,7 +467,7 @@
               <span class="text-slate-300 font-semibold">Emergency / Buffer sa Wallet</span>
               <span class="text-[11px] text-emerald-300 font-bold shrink-0">15%</span>
             </div>
-            <div id="splitBuffer" class="text-lg font-extrabold text-emerald-400">₱0</div>
+            <div id="splitBuffer" class="text-lg font-extrabold text-emerald-400">₱0.00</div>
             <p class="text-[11px] text-slate-400 mt-1">Huwag galawin para hindi kapusin</p>
           </div>
         </div>
@@ -315,18 +492,20 @@
         <div id="overdueAdviseControls" class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end bg-slate-950/90 border border-slate-800 p-3.5 rounded-xl">
           <div>
             <label class="text-[11px] font-semibold text-slate-400 block mb-1">Current Overdue Total</label>
-            <div id="adviseCurrentOverdue" class="text-base font-extrabold text-rose-400">₱0</div>
+            <div id="adviseCurrentOverdue" class="text-base font-extrabold text-rose-400">₱0.00</div>
           </div>
 
           <div>
             <label class="text-[11px] font-semibold text-amber-300 block mb-1">Advised Payment (Pwede i-edit ₱)</label>
-            <input type="number" id="advisePayInput" oninput="recalcOverdueRemaining(this.value)"
+            <input type="text" inputmode="decimal" id="advisePayInput"
+              oninput="handleFormattedNumberInput(this, (val) => recalcOverdueRemaining(val))"
+              onblur="finalizeFormattedInput(this)"
               class="w-full bg-slate-900 border border-amber-500/50 focus:border-amber-400 rounded-lg px-3 py-1.5 text-sm font-extrabold text-amber-300 outline-none" />
           </div>
 
           <div>
             <label class="text-[11px] font-semibold text-cyan-300 block mb-1">Remaining Balance (Overdue Only)</label>
-            <div id="adviseRemainingOverdue" class="text-base font-extrabold text-cyan-300">₱0</div>
+            <div id="adviseRemainingOverdue" class="text-base font-extrabold text-cyan-300">₱0.00</div>
           </div>
 
           <div class="flex justify-start md:justify-end">
@@ -355,36 +534,44 @@
           </div>
           <div class="text-left sm:text-right bg-slate-950 px-4 py-3 rounded-xl border border-amber-700/50 shrink-0">
             <span class="text-[11px] text-slate-400 block">Total Bonus Pool</span>
-            <span id="totalBonusDisplay" class="text-2xl font-extrabold text-amber-300">₱0</span>
+            <span id="totalBonusDisplay" class="text-2xl font-extrabold text-amber-300">₱0.00</span>
           </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
           <div class="slot-row p-4 min-w-0">
             <label class="text-xs font-bold text-cyan-300 block mb-1">Your 13th Month Pay (PHP)</label>
-            <input type="number" id="bonusYou13" oninput="updateBonus('you13', this.value)"
+            <input type="text" inputmode="decimal" id="bonusYou13"
+              oninput="handleFormattedNumberInput(this, (val) => updateBonus('you13', val))"
+              onblur="finalizeFormattedInput(this)"
               class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-base font-bold text-white outline-none focus:border-amber-400" />
           </div>
           <div class="slot-row p-4 min-w-0">
             <label class="text-xs font-bold text-cyan-300 block mb-1">Your Incentives / Performance Bonus (PHP)</label>
-            <input type="number" id="bonusYouInc" oninput="updateBonus('youInc', this.value)"
+            <input type="text" inputmode="decimal" id="bonusYouInc"
+              oninput="handleFormattedNumberInput(this, (val) => updateBonus('youInc', val))"
+              onblur="finalizeFormattedInput(this)"
               class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-base font-bold text-white outline-none focus:border-amber-400" />
           </div>
           <div class="slot-row p-4 min-w-0">
             <label class="text-xs font-bold text-amber-300 block mb-1">Husband's 13th Month Pay (PHP)</label>
-            <input type="number" id="bonusHusb13" oninput="updateBonus('husb13', this.value)"
+            <input type="text" inputmode="decimal" id="bonusHusb13"
+              oninput="handleFormattedNumberInput(this, (val) => updateBonus('husb13', val))"
+              onblur="finalizeFormattedInput(this)"
               class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-base font-bold text-white outline-none focus:border-amber-400" />
           </div>
           <div class="slot-row p-4 min-w-0">
             <label class="text-xs font-bold text-amber-300 block mb-1">Husband's Incentives / Bonus (PHP)</label>
-            <input type="number" id="bonusHusbInc" oninput="updateBonus('husbInc', this.value)"
+            <input type="text" inputmode="decimal" id="bonusHusbInc"
+              oninput="handleFormattedNumberInput(this, (val) => updateBonus('husbInc', val))"
+              onblur="finalizeFormattedInput(this)"
               class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-base font-bold text-white outline-none focus:border-amber-400" />
           </div>
         </div>
 
         <div class="mt-4 pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
           <div class="text-slate-300">
-            Pending / Overdue Loans Total: <strong id="bonusVsOverdue" class="text-rose-400">₱0</strong>
+            Pending / Overdue Loans Total: <strong id="bonusVsOverdue" class="text-rose-400">₱0.00</strong>
           </div>
           <div id="bonusCoverageNote" class="font-bold text-emerald-400"></div>
         </div>
@@ -407,7 +594,7 @@
           <div class="flex flex-wrap items-center gap-3 shrink-0">
             <div class="text-right">
               <span class="text-[11px] text-slate-400 block">Total Pending</span>
-              <span id="totalOverdueDisplay" class="text-xl font-extrabold text-rose-400">₱0</span>
+              <span id="totalOverdueDisplay" class="text-xl font-extrabold text-rose-400">₱0.00</span>
             </div>
             <button onclick="addOverdueRow()" class="px-3.5 py-2 text-xs font-bold bg-rose-700 hover:bg-rose-600 text-white rounded-xl shadow-sm transition whitespace-nowrap">
               + Add Pending
@@ -415,7 +602,16 @@
           </div>
         </div>
 
-        <div id="overdueContainer" class="space-y-2.5 mt-4"></div>
+        <!-- Column Labels (Desktop) -->
+        <div class="hidden md:grid md:grid-cols-12 gap-3 px-3.5 pt-4 pb-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+          <div class="col-span-4">Loan / Balance Name</div>
+          <div class="col-span-3">Target Due Date</div>
+          <div class="col-span-2">Amount (₱)</div>
+          <div class="col-span-2">Status</div>
+          <div class="col-span-1 text-right">Remove</div>
+        </div>
+
+        <div id="overdueContainer" class="space-y-2.5 mt-2"></div>
       </div>
     </div>
 
@@ -433,7 +629,12 @@
   </footer>
 
   <script>
-    const STORAGE_KEY = 'emijrd_simple_cashflow_v2';
+    const STORAGE_KEY = 'emijrd_simple_cashflow_v3';
+
+    const MONTH_NAMES = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
 
     const MONTH_SHORT = {
       January: 'Jan', February: 'Feb', March: 'Mar', April: 'Apr',
@@ -441,9 +642,15 @@
       September: 'Sep', October: 'Oct', November: 'Nov', December: 'Dec'
     };
 
+    const MONTH_INDEX = {
+      January: '01', February: '02', March: '03', April: '04',
+      May: '05', June: '06', July: '07', August: '08',
+      September: '09', October: '10', November: '11', December: '12'
+    };
+
     const DEFAULT_STATE = {
       selectedMonth: 'December',
-      activeTab: 'dec5',
+      activeTab: 'overview',
       paydays: {
         dec5: {
           dayNum: '5',
@@ -453,12 +660,12 @@
           rangeText: '5 – 14',
           salary: 30000,
           bills: [
-            { id: 'b1', name: 'Utility (4 mos arrears)', due: 'Dec 4', amount: 16096, mode: 'partial', reloan: 0 },
-            { id: 'b2', name: 'Maya Loan', due: 'Immediate', amount: 6025, mode: 'reloan', reloan: 5500 },
-            { id: 'b3', name: 'Smart Postpaid', due: 'Immediate', amount: 5396, mode: 'full', reloan: 0 },
-            { id: 'b4', name: 'Home Credit', due: 'Dec 7', amount: 3946, mode: 'full', reloan: 0 },
-            { id: 'b5', name: 'Renewable Loan', due: 'Dec 7–8', amount: 11000, mode: 'reloan', reloan: 15000 },
-            { id: 'b6', name: 'Tala Loan', due: 'Jan 5, 2027', amount: 18882, mode: 'skip', reloan: 14500 }
+            { id: 'b1', name: 'Utility (4 mos arrears)', due: '2026-12-04', amount: 16096, mode: 'partial', reloan: 0 },
+            { id: 'b2', name: 'Maya Loan', due: '2026-12-05', amount: 6025, mode: 'reloan', reloan: 5500 },
+            { id: 'b3', name: 'Smart Postpaid', due: '2026-12-05', amount: 5396, mode: 'full', reloan: 0 },
+            { id: 'b4', name: 'Home Credit', due: '2026-12-07', amount: 3946, mode: 'full', reloan: 0 },
+            { id: 'b5', name: 'Renewable Loan', due: '2026-12-08', amount: 11000, mode: 'reloan', reloan: 15000 },
+            { id: 'b6', name: 'Tala Loan', due: '2027-01-05', amount: 18882, mode: 'skip', reloan: 14500 }
           ]
         },
         dec15: {
@@ -469,8 +676,8 @@
           rangeText: '15 – 19',
           salary: 20000,
           bills: [
-            { id: 'h1', name: 'Groceries & Household Needs', due: '15th', amount: 5000, mode: 'full', reloan: 0 },
-            { id: 'h2', name: 'Gas & Toll Allowance', due: '15th', amount: 2500, mode: 'full', reloan: 0 }
+            { id: 'h1', name: 'Groceries & Household Needs', due: '2026-12-15', amount: 5000, mode: 'full', reloan: 0 },
+            { id: 'h2', name: 'Gas & Toll Allowance', due: '2026-12-15', amount: 2500, mode: 'full', reloan: 0 }
           ]
         },
         dec20: {
@@ -481,11 +688,11 @@
           rangeText: '20 – 29',
           salary: 25000,
           bills: [
-            { id: 'c1', name: 'Car Loan', due: '20th', amount: 15503, mode: 'full', reloan: 0 },
-            { id: 'c2', name: 'Maya Loan', due: '25th', amount: 6025, mode: 'reloan', reloan: 5500 },
-            { id: 'c3', name: 'WiFi (Minimum Due)', due: '27th', amount: 1899, mode: 'full', reloan: 0 },
-            { id: 'c4', name: 'Utility (Ilaw SOA)', due: '24–25th', amount: 4500, mode: 'skip', reloan: 0 },
-            { id: 'c5', name: 'Water Bill', due: 'End of Month', amount: 450, mode: 'skip', reloan: 0 }
+            { id: 'c1', name: 'Car Loan', due: '2026-12-20', amount: 15503, mode: 'full', reloan: 0 },
+            { id: 'c2', name: 'Maya Loan', due: '2026-12-25', amount: 6025, mode: 'reloan', reloan: 5500 },
+            { id: 'c3', name: 'WiFi (Minimum Due)', due: '2026-12-27', amount: 1899, mode: 'full', reloan: 0 },
+            { id: 'c4', name: 'Utility (Ilaw SOA)', due: '2026-12-25', amount: 4500, mode: 'skip', reloan: 0 },
+            { id: 'c5', name: 'Water Bill', due: '2026-12-30', amount: 450, mode: 'skip', reloan: 0 }
           ]
         },
         dec30: {
@@ -496,8 +703,8 @@
           rangeText: '30 – 4',
           salary: 20000,
           bills: [
-            { id: 'e1', name: 'Groceries / Family Fund', due: '30th', amount: 4000, mode: 'full', reloan: 0 },
-            { id: 'e2', name: 'Utility (Ilaw) Partial/Full', due: 'Early Next Mo', amount: 4500, mode: 'full', reloan: 0 }
+            { id: 'e1', name: 'Groceries / Family Fund', due: '2026-12-30', amount: 4000, mode: 'full', reloan: 0 },
+            { id: 'e2', name: 'Utility (Ilaw) Partial/Full', due: '2027-01-02', amount: 4500, mode: 'full', reloan: 0 }
           ]
         }
       },
@@ -508,14 +715,14 @@
         husbInc: 0
       },
       overdue: [
-        { id: 'o1', name: 'Remaining 50% Utility Arrears', targetDate: 'Next Cutoff / Bonus', amount: 8048, status: 'Awaiting Funds' },
-        { id: 'o2', name: 'Tala Loan', targetDate: 'Jan 5, 2027', amount: 18882, status: 'Scheduled' }
+        { id: 'o1', name: 'Remaining 50% Utility Arrears', targetDate: '2026-12-15', amount: 8048, status: 'Awaiting Funds' },
+        { id: 'o2', name: 'Tala Loan', targetDate: '2027-01-05', amount: 18882, status: 'Scheduled' }
       ]
     };
 
     const EMPTY_STATE = {
       selectedMonth: 'December',
-      activeTab: 'dec5',
+      activeTab: 'overview',
       paydays: {
         dec5: { dayNum: '5', badge: 'Your Cutoff', ownerLabel: '(You)', days: 10, rangeText: '5 – 14', salary: 0, bills: [] },
         dec15: { dayNum: '15', badge: "Husband's Cutoff", ownerLabel: '(Husband)', days: 5, rangeText: '15 – 19', salary: 0, bills: [] },
@@ -526,15 +733,92 @@
       overdue: []
     };
 
+    function normalizeDateString(raw, fallbackDay = '15') {
+      if (!raw) return `2026-12-${fallbackDay}`;
+      if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
+      const parsed = new Date(raw);
+      if (!isNaN(parsed.getTime())) {
+        const y = parsed.getFullYear() < 2000 ? 2026 : parsed.getFullYear();
+        const m = String(parsed.getMonth() + 1).padStart(2, '0');
+        const d = String(parsed.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+      }
+      return `2026-12-${fallbackDay}`;
+    }
+
     let state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || JSON.parse(JSON.stringify(DEFAULT_STATE));
     if (!state.selectedMonth) state.selectedMonth = 'December';
+
+    // Ensure all stored due dates follow YYYY-MM-DD for native <input type="date">
+    Object.keys(state.paydays || {}).forEach(k => {
+      const dayPad = String(state.paydays[k].dayNum || '15').padStart(2, '0');
+      (state.paydays[k].bills || []).forEach(b => {
+        b.due = normalizeDateString(b.due, dayPad);
+      });
+    });
+    (state.overdue || []).forEach(o => {
+      o.targetDate = normalizeDateString(o.targetDate, '15');
+    });
 
     function saveState() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }
 
+    // Format currency with peso sign, commas, and 2 decimal places
     function fmt(num) {
-      return '₱' + Math.round(Number(num) || 0).toLocaleString('en-PH');
+      const n = Number(num) || 0;
+      return '₱' + n.toLocaleString('en-PH', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    // Format plain numeric input with commas and 2 decimals
+    function fmtInputVal(num) {
+      const n = Number(num) || 0;
+      return n.toLocaleString('en-PH', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function parseFormattedNumber(str) {
+      if (typeof str === 'number') return str;
+      const cleaned = String(str || '').replace(/[^0-9.]/g, '');
+      const parts = cleaned.split('.');
+      const normalized = parts.length > 2 ? parts[0] + '.' + parts.slice(1).join('') : cleaned;
+      return Math.max(0, parseFloat(normalized) || 0);
+    }
+
+    function handleFormattedNumberInput(el, callback) {
+      const raw = el.value;
+      const numericVal = parseFormattedNumber(raw);
+
+      // Live comma formatting while preserving decimal typing
+      const cleaned = raw.replace(/[^0-9.]/g, '');
+      const parts = cleaned.split('.');
+      const intPart = parts[0] ? Number(parts[0]).toLocaleString('en-PH') : '';
+      if (parts.length > 1) {
+        el.value = `${intPart || '0'}.${parts[1].slice(0, 2)}`;
+      } else if (intPart) {
+        el.value = intPart;
+      } else {
+        el.value = '';
+      }
+
+      callback(numericVal);
+    }
+
+    function finalizeFormattedInput(el) {
+      const val = parseFormattedNumber(el.value);
+      el.value = fmtInputVal(val);
+    }
+
+    function formatDisplayDate(isoDate) {
+      if (!isoDate || !/^\d{4}-\d{2}-\d{2}$/.test(isoDate)) return isoDate || 'No Date';
+      const [y, m, d] = isoDate.split('-');
+      const mName = MONTH_NAMES[parseInt(m, 10) - 1] || 'Dec';
+      return `${MONTH_SHORT[mName]} ${parseInt(d, 10)}, ${y}`;
     }
 
     function changeMonth(month) {
@@ -558,7 +842,7 @@
       }
     }
 
-    function updateBill(id, field, value) {
+    function updateBill(id, field, value, skipRender = false) {
       const tab = state.activeTab;
       const bill = state.paydays[tab].bills.find(b => b.id === id);
       if (!bill) return;
@@ -569,15 +853,21 @@
         bill[field] = value;
       }
       saveState();
-      render();
+      if (skipRender) {
+        renderPaydayCalculations();
+      } else {
+        render();
+      }
     }
 
     function addBillRow() {
       const tab = state.activeTab;
+      const mIdx = MONTH_INDEX[state.selectedMonth] || '12';
+      const dayPad = String(state.paydays[tab].dayNum || '15').padStart(2, '0');
       state.paydays[tab].bills.push({
         id: 'b_' + Date.now(),
         name: 'New Bill / Expense',
-        due: 'Due Date',
+        due: `2026-${mIdx}-${dayPad}`,
         amount: 1000,
         mode: 'full',
         reloan: 0
@@ -596,14 +886,15 @@
     function updateBonus(key, val) {
       state.bonuses[key] = Math.max(0, Number(val) || 0);
       saveState();
-      renderBonusView();
+      renderBonusSummaryOnly();
     }
 
     function addOverdueRow() {
+      const mIdx = MONTH_INDEX[state.selectedMonth] || '12';
       state.overdue.push({
         id: 'o_' + Date.now(),
         name: 'Pending Loan / Balance',
-        targetDate: 'TBD',
+        targetDate: `2026-${mIdx}-15`,
         amount: 2000,
         status: 'Awaiting Funds'
       });
@@ -611,7 +902,7 @@
       renderOverdueView();
     }
 
-    function updateOverdue(id, field, val) {
+    function updateOverdue(id, field, val, skipRender = false) {
       const item = state.overdue.find(o => o.id === id);
       if (!item) return;
       if (field === 'amount') {
@@ -620,7 +911,15 @@
         item[field] = val;
       }
       saveState();
-      renderOverdueView();
+      if (skipRender) {
+        updateOverdueTotalOnly();
+      } else {
+        renderOverdueView();
+      }
+    }
+
+    function updateOverdueTotalOnly() {
+      document.getElementById('totalOverdueDisplay').textContent = fmt(getTotalOverdueAmount());
     }
 
     function removeOverdue(id) {
@@ -656,7 +955,7 @@
         return { outflow: amt, inflow: 0, net: -amt };
       }
       if (bill.mode === 'partial') {
-        const half = Math.round(amt / 2);
+        const half = Math.round((amt / 2) * 100) / 100;
         return { outflow: half, inflow: 0, net: -half };
       }
       if (bill.mode === 'reloan') {
@@ -665,8 +964,129 @@
       return { outflow: 0, inflow: 0, net: 0 };
     }
 
+    function getPaydayTotals(key) {
+      const pd = state.paydays[key];
+      if (!pd) return { salary: 0, outflow: 0, inflow: 0, net: 0, days: 0 };
+      let outflow = 0;
+      let inflow = 0;
+      (pd.bills || []).forEach(b => {
+        const imp = getBillCashImpact(b);
+        outflow += imp.outflow;
+        inflow += imp.inflow;
+      });
+      const salary = Number(pd.salary) || 0;
+      return {
+        salary,
+        outflow,
+        inflow,
+        net: salary - outflow + inflow,
+        days: Number(pd.days) || 0
+      };
+    }
+
     function getTotalOverdueAmount() {
       return state.overdue.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+    }
+
+    function getTotalBonusAmount() {
+      const b = state.bonuses;
+      return (Number(b.you13) || 0) + (Number(b.youInc) || 0) + (Number(b.husb13) || 0) + (Number(b.husbInc) || 0);
+    }
+
+    function getNextMonthShort(mFull) {
+      const idx = MONTH_NAMES.indexOf(mFull);
+      const nextIdx = idx === -1 ? 0 : (idx + 1) % 12;
+      return MONTH_SHORT[MONTH_NAMES[nextIdx]];
+    }
+
+    function getLastDayOfMonth(mFull) {
+      const idx = MONTH_NAMES.indexOf(mFull);
+      if (idx === -1) return 31;
+      return new Date(2026, idx + 1, 0).getDate();
+    }
+
+    function renderOverviewView() {
+      const mFull = state.selectedMonth || 'December';
+      const mShort = MONTH_SHORT[mFull] || 'Dec';
+      const nextMShort = getNextMonthShort(mFull);
+      const lastDay = getLastDayOfMonth(mFull);
+
+      document.getElementById('overviewHeading').textContent = `${mFull} Cashflow Overview`;
+
+      // Window 1: By 15th or 17th of the month (Combines 5th You + 15th Husband)
+      const p5 = getPaydayTotals('dec5');
+      const p15 = getPaydayTotals('dec15');
+      const w1Salary = p5.salary + p15.salary;
+      const w1Reloan = p5.inflow + p15.inflow;
+      const w1Bills = p5.outflow + p15.outflow;
+      const w1Net = p5.net + p15.net;
+      const w1Days = (p5.days + p15.days) || 15;
+      const w1Daily = Math.max(0, w1Net / w1Days);
+
+      document.getElementById('ov1DateWindow').textContent = `${mShort} 15 – ${mShort} 17 Posting`;
+      document.getElementById('ov1Title').textContent = `Matitirang Pera by ${mShort} 15 or 17`;
+      document.getElementById('ov1NetCash').textContent = fmt(w1Net);
+      document.getElementById('ov1DailyBudget').textContent = `${fmt(w1Daily)} / day (${w1Days} days)`;
+      document.getElementById('ov1Salary').textContent = fmt(w1Salary);
+      document.getElementById('ov1Reloan').textContent = '+' + fmt(w1Reloan);
+      document.getElementById('ov1Bills').textContent = '-' + fmt(w1Bills);
+
+      const ov1Pill = document.getElementById('ov1StatusPill');
+      if (w1Net < 0) {
+        ov1Pill.textContent = 'Short / Deficit';
+        ov1Pill.className = 'inline-block text-xs font-bold px-2.5 py-1 rounded-full bg-rose-950/80 text-rose-300 border border-rose-700/60';
+      } else if (w1Net < 4000) {
+        ov1Pill.textContent = 'Tight Budget';
+        ov1Pill.className = 'inline-block text-xs font-bold px-2.5 py-1 rounded-full bg-amber-950/80 text-amber-300 border border-amber-700/60';
+      } else {
+        ov1Pill.textContent = 'Safe Cashflow';
+        ov1Pill.className = 'inline-block text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-700/60';
+      }
+
+      // Window 2: By 30th/31st or 2nd of Next Month (Combines 20th You + 30th Husband)
+      const p20 = getPaydayTotals('dec20');
+      const p30 = getPaydayTotals('dec30');
+      const w2Salary = p20.salary + p30.salary;
+      const w2Reloan = p20.inflow + p30.inflow;
+      const w2Bills = p20.outflow + p30.outflow;
+      const w2Net = p20.net + p30.net;
+      const w2Days = (p20.days + p30.days) || 16;
+      const w2Daily = Math.max(0, w2Net / w2Days);
+
+      document.getElementById('ov2DateWindow').textContent = `${mShort} ${lastDay} – ${nextMShort} 2 Posting`;
+      document.getElementById('ov2Title').textContent = `Matitirang Pera by ${mShort} ${lastDay} or ${nextMShort} 2`;
+      document.getElementById('ov2NetLabel').textContent = `Net Cash in Hand by ${lastDay}th / 2nd`;
+      document.getElementById('ov2NetCash').textContent = fmt(w2Net);
+      document.getElementById('ov2DailyBudget').textContent = `${fmt(w2Daily)} / day (${w2Days} days)`;
+      document.getElementById('ov2Salary').textContent = fmt(w2Salary);
+      document.getElementById('ov2Reloan').textContent = '+' + fmt(w2Reloan);
+      document.getElementById('ov2Bills').textContent = '-' + fmt(w2Bills);
+
+      const ov2Pill = document.getElementById('ov2StatusPill');
+      if (w2Net < 0) {
+        ov2Pill.textContent = 'Short / Deficit';
+        ov2Pill.className = 'inline-block text-xs font-bold px-2.5 py-1 rounded-full bg-rose-950/80 text-rose-300 border border-rose-700/60';
+      } else if (w2Net < 4000) {
+        ov2Pill.textContent = 'Tight Budget';
+        ov2Pill.className = 'inline-block text-xs font-bold px-2.5 py-1 rounded-full bg-amber-950/80 text-amber-300 border border-amber-700/60';
+      } else {
+        ov2Pill.textContent = 'Safe Cashflow';
+        ov2Pill.className = 'inline-block text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-700/60';
+      }
+
+      // Full Month Totals
+      const monthNet = w1Net + w2Net;
+      const monthSalary = w1Salary + w2Salary;
+      const netBillsPaid = Math.max(0, (w1Bills + w2Bills) - (w1Reloan + w2Reloan));
+
+      const monthNetEl = document.getElementById('ovMonthNetTotal');
+      monthNetEl.textContent = fmt(monthNet);
+      monthNetEl.className = `text-xl font-extrabold ${monthNet >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
+
+      document.getElementById('ovTotalCombinedSalary').textContent = fmt(monthSalary);
+      document.getElementById('ovTotalCombinedBills').textContent = fmt(netBillsPaid);
+      document.getElementById('ovTotalBonusPool').textContent = fmt(getTotalBonusAmount());
+      document.getElementById('ovTotalOverdueWatch').textContent = fmt(getTotalOverdueAmount());
     }
 
     function renderOverdueAdviseSection(netCash, days) {
@@ -683,7 +1103,6 @@
         return;
       }
 
-      // Reserve at least ₱400/day for basic daily needs before advising overdue payment
       const minEssentialReserve = (days || 1) * 400;
       const extraAvailable = Math.max(0, netCash - minEssentialReserve);
 
@@ -693,7 +1112,6 @@
         return;
       }
 
-      // Advise paying 50% of safe extra cash (rounded to nearest 100), capped at totalOverdue
       let suggestedPay = Math.round((extraAvailable * 0.5) / 100) * 100;
       if (suggestedPay < 300) suggestedPay = Math.min(extraAvailable, 300);
       suggestedPay = Math.min(suggestedPay, totalOverdue);
@@ -704,7 +1122,7 @@
       msgEl.innerHTML = `May sobra kang safe cash sa cutoff na ito! <span class="text-amber-300 font-bold">Advise: Magbayad kahit ${fmt(suggestedPay)}</span> para mabawasan ang overdue balance mo nang hindi nagigipit sa araw-araw na budget.`;
 
       currentOverdueEl.textContent = fmt(totalOverdue);
-      payInputEl.value = suggestedPay;
+      payInputEl.value = fmtInputVal(suggestedPay);
       remainingEl.textContent = fmt(remainingOverdue);
     }
 
@@ -716,12 +1134,11 @@
     }
 
     function applyAdvisePayment() {
-      let toPay = Math.max(0, Number(document.getElementById('advisePayInput').value) || 0);
+      let toPay = parseFormattedNumber(document.getElementById('advisePayInput').value);
       if (toPay <= 0 || state.overdue.length === 0) return;
 
       if (!confirm(`Ibawas ang ${fmt(toPay)} sa iyong Pending / Overdue Loans list?`)) return;
 
-      // Deduct sequentially starting from the first overdue item
       for (let i = 0; i < state.overdue.length && toPay > 0; i++) {
         const itemAmt = Number(state.overdue[i].amount) || 0;
         if (itemAmt <= toPay) {
@@ -729,13 +1146,12 @@
           state.overdue[i].amount = 0;
           state.overdue[i].status = 'Paid';
         } else {
-          state.overdue[i].amount = itemAmt - toPay;
+          state.overdue[i].amount = Math.round((itemAmt - toPay) * 100) / 100;
           state.overdue[i].status = 'Partially Paid';
           toPay = 0;
         }
       }
 
-      // Remove items that reached 0
       state.overdue = state.overdue.filter(item => item.amount > 0);
       saveState();
       render();
@@ -753,6 +1169,21 @@
         const impact = getBillCashImpact(bill);
         totalOutflow += impact.outflow;
         totalInflow += impact.inflow;
+
+        // Update per-row impact text live without destroying active input focus
+        const impactEl = document.getElementById(`impact_${bill.id}`);
+        if (impactEl) {
+          if (bill.mode === 'skip') {
+            impactEl.textContent = '₱0.00 (Next Cutoff)';
+            impactEl.className = 'text-xs font-bold text-slate-400 truncate';
+          } else if (impact.net >= 0) {
+            impactEl.textContent = '+' + fmt(impact.net) + ' Cash Gain';
+            impactEl.className = 'text-xs font-bold text-emerald-400 truncate';
+          } else {
+            impactEl.textContent = '-' + fmt(Math.abs(impact.net));
+            impactEl.className = 'text-xs font-bold text-rose-400 truncate';
+          }
+        }
       });
 
       const netCash = data.salary - totalOutflow + totalInflow;
@@ -786,14 +1217,8 @@
       renderOverdueAdviseSection(netCash, data.days);
     }
 
-    function renderBonusView() {
-      const b = state.bonuses;
-      document.getElementById('bonusYou13').value = b.you13;
-      document.getElementById('bonusYouInc').value = b.youInc;
-      document.getElementById('bonusHusb13').value = b.husb13;
-      document.getElementById('bonusHusbInc').value = b.husbInc;
-
-      const totalBonus = (Number(b.you13) || 0) + (Number(b.youInc) || 0) + (Number(b.husb13) || 0) + (Number(b.husbInc) || 0);
+    function renderBonusSummaryOnly() {
+      const totalBonus = getTotalBonusAmount();
       const totalOverdue = getTotalOverdueAmount();
 
       document.getElementById('totalBonusDisplay').textContent = fmt(totalBonus);
@@ -807,6 +1232,15 @@
         noteEl.textContent = `Kulang pa ng ${fmt(totalOverdue - totalBonus)} para ma-zero ang lahat ng pending loans.`;
         noteEl.className = 'font-bold text-amber-300';
       }
+    }
+
+    function renderBonusView() {
+      const b = state.bonuses;
+      document.getElementById('bonusYou13').value = fmtInputVal(b.you13);
+      document.getElementById('bonusYouInc').value = fmtInputVal(b.youInc);
+      document.getElementById('bonusHusb13').value = fmtInputVal(b.husb13);
+      document.getElementById('bonusHusbInc').value = fmtInputVal(b.husbInc);
+      renderBonusSummaryOnly();
     }
 
     function renderOverdueView() {
@@ -828,11 +1262,13 @@
               class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-sm font-semibold text-rose-300 focus:border-cyan-400 outline-none" />
           </div>
           <div class="md:col-span-3 min-w-0">
-            <input type="text" value="${item.targetDate}" onchange="updateOverdue('${item.id}', 'targetDate', this.value)"
-              class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:border-cyan-400 outline-none" placeholder="Target Pay Date" />
+            <input type="date" value="${item.targetDate}" onchange="updateOverdue('${item.id}', 'targetDate', this.value)"
+              class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-amber-300 focus:border-cyan-400 outline-none" />
           </div>
           <div class="md:col-span-2 min-w-0">
-            <input type="number" value="${item.amount}" oninput="updateOverdue('${item.id}', 'amount', this.value)"
+            <input type="text" inputmode="decimal" value="${fmtInputVal(item.amount)}"
+              oninput="handleFormattedNumberInput(this, (val) => updateOverdue('${item.id}', 'amount', val, true))"
+              onblur="finalizeFormattedInput(this)"
               class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-bold text-white focus:border-cyan-400 outline-none" />
           </div>
           <div class="md:col-span-2 min-w-0">
@@ -855,7 +1291,6 @@
       const mShort = MONTH_SHORT[mFull] || 'Dec';
       document.getElementById('monthSelector').value = mFull;
 
-      // Update Tab Labels dynamically based on selectedMonth
       const tabConfigs = [
         { key: 'dec5', num: '1', day: '5', owner: '(You)' },
         { key: 'dec15', num: '2', day: '15', owner: '(Husband)' },
@@ -870,7 +1305,7 @@
         }
       });
 
-      ['dec5', 'dec15', 'dec20', 'dec30', 'bonus', 'overdue'].forEach(t => {
+      ['overview', 'dec5', 'dec15', 'dec20', 'dec30', 'bonus', 'overdue'].forEach(t => {
         const el = document.getElementById('tab-' + t);
         if (el) {
           if (state.activeTab === t) el.classList.add('active');
@@ -878,13 +1313,21 @@
         }
       });
 
+      const overviewView = document.getElementById('overviewView');
       const paydayView = document.getElementById('paydayView');
       const bonusView = document.getElementById('bonusView');
       const overdueView = document.getElementById('overdueView');
 
+      overviewView.classList.add('hidden');
       paydayView.classList.add('hidden');
       bonusView.classList.add('hidden');
       overdueView.classList.add('hidden');
+
+      if (state.activeTab === 'overview') {
+        overviewView.classList.remove('hidden');
+        renderOverviewView();
+        return;
+      }
 
       if (state.activeTab === 'bonus') {
         bonusView.classList.remove('hidden');
@@ -906,7 +1349,7 @@
       document.getElementById('paydayBadge').textContent = data.badge;
       document.getElementById('daysCoverLabel').textContent = `Covers ${data.days} days (${mShort} ${data.rangeText || ''})`;
       document.getElementById('paydayTitle').textContent = `${mFull} ${dayNum} Salary${ownerSuffix}`;
-      document.getElementById('salaryInput').value = data.salary;
+      document.getElementById('salaryInput').value = fmtInputVal(data.salary);
 
       const container = document.getElementById('billsContainer');
       container.innerHTML = '';
@@ -921,7 +1364,7 @@
         let impactClass = '';
 
         if (bill.mode === 'skip') {
-          impactLabel = '₱0 (Next Cutoff)';
+          impactLabel = '₱0.00 (Next Cutoff)';
           impactClass = 'text-slate-400';
         } else if (impact.net >= 0) {
           impactLabel = '+' + fmt(impact.net) + ' Cash Gain';
@@ -934,8 +1377,10 @@
         const reloanInputHtml = bill.mode === 'reloan'
           ? `<div class="mt-2 flex flex-wrap items-center gap-2">
                <span class="text-[11px] font-semibold text-emerald-400 shrink-0">Reloan Proceeds (₱):</span>
-               <input type="number" value="${bill.reloan}" onchange="updateBill('${bill.id}', 'reloan', this.value)"
-                 class="w-28 bg-slate-950 border border-emerald-700/60 rounded-lg px-2.5 py-1 text-xs font-bold text-emerald-300 outline-none" />
+               <input type="text" inputmode="decimal" value="${fmtInputVal(bill.reloan)}"
+                 oninput="handleFormattedNumberInput(this, (val) => updateBill('${bill.id}', 'reloan', val, true))"
+                 onblur="finalizeFormattedInput(this)"
+                 class="w-32 bg-slate-950 border border-emerald-700/60 rounded-lg px-2.5 py-1 text-xs font-bold text-emerald-300 outline-none" />
              </div>`
           : '';
 
@@ -948,11 +1393,13 @@
             ${reloanInputHtml}
           </div>
           <div class="md:col-span-2 min-w-0">
-            <input type="text" value="${bill.due}" onchange="updateBill('${bill.id}', 'due', this.value)"
+            <input type="date" value="${bill.due}" onchange="updateBill('${bill.id}', 'due', this.value)"
               class="w-full bg-slate-950 border border-slate-700/80 rounded-lg px-2.5 py-1.5 text-xs text-amber-300 font-semibold focus:border-cyan-400 outline-none" />
           </div>
           <div class="md:col-span-2 min-w-0">
-            <input type="number" value="${bill.amount}" onchange="updateBill('${bill.id}', 'amount', this.value)"
+            <input type="text" inputmode="decimal" value="${fmtInputVal(bill.amount)}"
+              oninput="handleFormattedNumberInput(this, (val) => updateBill('${bill.id}', 'amount', val, true))"
+              onblur="finalizeFormattedInput(this)"
               class="w-full bg-slate-950 border border-slate-700/80 rounded-lg px-2.5 py-1.5 text-xs font-bold text-white focus:border-cyan-400 outline-none" />
           </div>
           <div class="md:col-span-3 min-w-0">
@@ -965,7 +1412,7 @@
             </select>
           </div>
           <div class="md:col-span-2 flex items-center justify-between md:justify-end gap-2 min-w-0">
-            <span class="text-xs font-bold ${impactClass} truncate">${impactLabel}</span>
+            <span id="impact_${bill.id}" class="text-xs font-bold ${impactClass} truncate">${impactLabel}</span>
             <button onclick="removeBillRow('${bill.id}')" class="text-xs font-bold px-2 py-1 rounded bg-rose-950/60 hover:bg-rose-900/60 text-rose-400 border border-rose-900 shrink-0" title="Remove">✕</button>
           </div>
         `;
@@ -977,9 +1424,37 @@
 
     function copySummary() {
       const tab = state.activeTab;
+      const mFull = state.selectedMonth || 'December';
+      const mShort = MONTH_SHORT[mFull] || 'Dec';
+      const nextMShort = getNextMonthShort(mFull);
+      const lastDay = getLastDayOfMonth(mFull);
+
+      if (tab === 'overview') {
+        const p5 = getPaydayTotals('dec5');
+        const p15 = getPaydayTotals('dec15');
+        const p20 = getPaydayTotals('dec20');
+        const p30 = getPaydayTotals('dec30');
+        const w1Net = p5.net + p15.net;
+        const w2Net = p20.net + p30.net;
+
+        const lines = [
+          `EMIJRD ONLINE SERVICES — ${mFull.toUpperCase()} OVERVIEW`,
+          `1. Matitira by ${mShort} 15 / 17: ${fmt(w1Net)}`,
+          `2. Matitira by ${mShort} ${lastDay} / ${nextMShort} 2: ${fmt(w2Net)}`,
+          `---`,
+          `Kabuuang Matitira sa Buong Buwan: ${fmt(w1Net + w2Net)}`,
+          `13th Month & Bonus Pool: ${fmt(getTotalBonusAmount())}`,
+          `Pending / Overdue Loans: ${fmt(getTotalOverdueAmount())}`
+        ];
+        navigator.clipboard.writeText(lines.join('\n'));
+        const btn = document.getElementById('copyBtn');
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy Checklist', 1500);
+        return;
+      }
+
       if (!state.paydays[tab]) return;
       const data = state.paydays[tab];
-      const mFull = state.selectedMonth || 'December';
       const titleText = `${mFull} ${data.dayNum || ''} Salary`.toUpperCase();
 
       let lines = [`EMIJRD ONLINE SERVICES — ${titleText}`, `Sahod: ${fmt(data.salary)}`, `---`];
@@ -989,12 +1464,13 @@
         const imp = getBillCashImpact(b);
         out += imp.outflow;
         inc += imp.inflow;
+        const prettyDate = formatDisplayDate(b.due);
         if (b.mode === 'skip') {
-          lines.push(`[SKIP] ${b.name} (${b.due}) - Next Cutoff`);
+          lines.push(`[SKIP] ${b.name} (${prettyDate}) - Next Cutoff`);
         } else if (b.mode === 'reloan') {
-          lines.push(`[PAY & RELOAN] ${b.name}: -${fmt(imp.outflow)} / +${fmt(imp.inflow)}`);
+          lines.push(`[PAY & RELOAN] ${b.name} (${prettyDate}): -${fmt(imp.outflow)} / +${fmt(imp.inflow)}`);
         } else {
-          lines.push(`[PAY] ${b.name}: -${fmt(imp.outflow)}`);
+          lines.push(`[PAY] ${b.name} (${prettyDate}): -${fmt(imp.outflow)}`);
         }
       });
 
@@ -1003,7 +1479,7 @@
 
       const controlsVisible = !document.getElementById('overdueAdviseControls').classList.contains('hidden');
       if (controlsVisible) {
-        const advisePay = Number(document.getElementById('advisePayInput').value) || 0;
+        const advisePay = parseFormattedNumber(document.getElementById('advisePayInput').value);
         const remOverdue = Math.max(0, getTotalOverdueAmount() - advisePay);
         lines.push(`Advised Overdue Payment: ${fmt(advisePay)} (Remaining Overdue: ${fmt(remOverdue)})`);
       }
