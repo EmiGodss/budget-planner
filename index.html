@@ -114,7 +114,7 @@
               <span>EMIJRD Online Services</span>
             </div>
             <span id="saveStatusBadge" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950/80 text-emerald-300 border border-emerald-700/60">
-              Auto-Saved
+              Auto-Saved Per Month
             </span>
           </div>
           <h1 class="text-lg sm:text-2xl font-extrabold text-white tracking-tight truncate">Sweldo &amp; Bills Liquidation</h1>
@@ -154,10 +154,10 @@
         </button>
 
         <button onclick="clearAllData()" class="px-3 py-1.5 bg-rose-950/80 hover:bg-rose-900 text-rose-200 rounded-xl border border-rose-700/70 text-xs font-bold transition-all whitespace-nowrap">
-          Clear All
+          Clear Month
         </button>
         <button onclick="resetToDefault()" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-200 rounded-xl border border-slate-700 text-xs font-bold transition-all whitespace-nowrap">
-          Reset Default
+          Reset Month
         </button>
         <button onclick="copySummary()" id="copyBtn" class="px-4 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 rounded-xl text-xs font-extrabold shadow-md active:scale-95 transition-all whitespace-nowrap">
           Copy Checklist
@@ -203,12 +203,15 @@
       <div class="glass-card p-5 rounded-2xl shadow-sm border-l-4 border-l-cyan-400">
         <div class="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-cyan-950/80 text-cyan-300 border border-cyan-800/60">
-              Philippine Payroll &amp; Kinsenas Snapshot
-            </span>
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-cyan-950/80 text-cyan-300 border border-cyan-800/60">
+                Philippine Payroll &amp; Kinsenas Snapshot
+              </span>
+              <span id="ovCarryOverNotice" class="hidden text-[11px] font-bold px-2.5 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-700/60"></span>
+            </div>
             <h2 id="overviewHeading" class="text-lg sm:text-xl font-extrabold text-white mt-1.5">December Cashflow Overview</h2>
             <p class="text-xs text-slate-400 mt-0.5">
-              Simpleng buod ng matitirang pera sa kamay base sa dalawang bagsak ng sweldo sa Pilipinas (15th/17th at 30th/31st–2nd ng susunod na buwan).
+              Simpleng buod ng matitirang pera sa kamay base sa dalawang bagsak ng sweldo sa Pilipinas (15th/17th at 30th/31st–2nd ng susunod na buwan). Hiwalay ang record ng bawat buwan.
             </p>
           </div>
           <div class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-left sm:text-right">
@@ -328,12 +331,12 @@
         <h3 class="text-sm font-bold text-white mb-3">Mabilisang Estado ng Pera at Utang</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
           <div class="slot-row p-3.5">
-            <span class="text-slate-400 block text-[11px]">Total Combined Sahod (Buong Buwan)</span>
+            <span class="text-slate-400 block text-[11px]">Total Combined Sahod (Buwang Ito)</span>
             <span id="ovTotalCombinedSalary" class="text-lg font-extrabold text-white mt-0.5 block">₱0.00</span>
             <span class="text-[11px] text-slate-400 mt-0.5 block">4 cutoffs (You + Husband)</span>
           </div>
           <div class="slot-row p-3.5">
-            <span class="text-slate-400 block text-[11px]">Total Bills Paid (Buong Buwan)</span>
+            <span class="text-slate-400 block text-[11px]">Total Bills Paid (Buwang Ito)</span>
             <span id="ovTotalCombinedBills" class="text-lg font-extrabold text-rose-400 mt-0.5 block">₱0.00</span>
             <span class="text-[11px] text-slate-400 mt-0.5 block">Net of reloan proceeds</span>
           </div>
@@ -547,7 +550,7 @@
             <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-700/60">
               Extra Funds Pool
             </span>
-            <h2 class="text-lg font-extrabold text-white mt-1.5">13th Month Pay, Incentives &amp; Bonuses</h2>
+            <h2 id="bonusHeading" class="text-lg font-extrabold text-white mt-1.5">13th Month Pay, Incentives &amp; Bonuses</h2>
             <p class="text-xs text-slate-400">Hiwalay ito sa regular sahod para makita mo kung magkano ang pwedeng pambayad sa malalaking utang o pang-ipon.</p>
           </div>
           <div class="text-left sm:text-right bg-slate-950 px-4 py-3 rounded-xl border border-amber-700/50 shrink-0">
@@ -606,14 +609,17 @@
             <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-rose-950/80 text-rose-300 border border-rose-700/60">
               Watchlist — Babayaran Kapag May Extra
             </span>
-            <h2 class="text-lg font-extrabold text-white mt-1.5">Pending Overdue Loans &amp; Deferred Arrears</h2>
-            <p class="text-xs text-slate-400">Mga utang o balance na naka-hold muna ngayon at naghihintay ng pambayad sa takdang panahon.</p>
+            <h2 id="overdueHeading" class="text-lg font-extrabold text-white mt-1.5">Pending Overdue Loans &amp; Deferred Arrears</h2>
+            <p class="text-xs text-slate-400">Mga utang o balance na naka-hold muna ngayon sa buwang ito (kasama ang carry-over mula sa nakaraang buwan).</p>
           </div>
           <div class="flex flex-wrap items-center gap-3 shrink-0">
             <div class="text-right">
               <span class="text-[11px] text-slate-400 block">Total Pending</span>
               <span id="totalOverdueDisplay" class="text-xl font-extrabold text-rose-400">₱0.00</span>
             </div>
+            <button onclick="pullOverdueFromPreviousMonth(true)" class="px-3 py-2 text-xs font-bold bg-amber-900/70 hover:bg-amber-800 text-amber-200 border border-amber-600/50 rounded-xl shadow-sm transition whitespace-nowrap" title="Kunin ulit ang natitirang overdue mula sa nakaraang buwan">
+              Pull Prev Month Overdue
+            </button>
             <button onclick="addOverdueRow()" class="px-3.5 py-2 text-xs font-bold bg-rose-700 hover:bg-rose-600 text-white rounded-xl shadow-sm transition whitespace-nowrap">
               + Add Pending
             </button>
@@ -641,14 +647,13 @@
         <img src="./logo.jpg" alt="EMIJRD Online Services" class="w-5 h-5 rounded object-cover border border-cyan-500/30">
         <span class="font-semibold text-slate-200">EMIJRD Online Services</span>
       </div>
-      <span>Sweldo &amp; Bills Liquidation • Multi-Device Ready</span>
+      <span>Sweldo &amp; Bills Liquidation • Monthly Records &amp; Overdue Carry-Over</span>
     </div>
   </footer>
 
   <script>
-    const STORAGE_KEY = 'emijrd_simple_cashflow_v5';
+    const STORAGE_KEY = 'emijrd_monthly_cashflow_v1';
     let memoryFallbackState = null;
-    let storageAvailable = true;
 
     const MONTH_NAMES = [
       'January', 'February', 'March', 'April', 'May', 'June',
@@ -667,104 +672,172 @@
       September: '09', October: '10', November: '11', December: '12'
     };
 
-    const DEFAULT_STATE = {
-      selectedMonth: 'December',
-      activeTab: 'overview',
-      adviseTargetId: 'auto',
-      paydays: {
-        dec5: {
-          dayNum: '5',
-          badge: 'Your Cutoff',
-          ownerLabel: '(You)',
-          days: 10,
-          rangeText: '5 – 14',
-          salary: 30000,
-          bills: [
-            { id: 'b1', name: 'Utility (4 mos arrears)', due: '2026-12-04', amount: 16096, mode: 'partial', reloan: 0 },
-            { id: 'b2', name: 'Maya Loan', due: '2026-12-05', amount: 6025, mode: 'reloan', reloan: 5500 },
-            { id: 'b3', name: 'Smart Postpaid', due: '2026-12-05', amount: 5396, mode: 'full', reloan: 0 },
-            { id: 'b4', name: 'Home Credit', due: '2026-12-07', amount: 3946, mode: 'full', reloan: 0 },
-            { id: 'b5', name: 'Renewable Loan', due: '2026-12-08', amount: 11000, mode: 'reloan', reloan: 15000 },
-            { id: 'b6', name: 'Tala Loan', due: '2027-01-05', amount: 18882, mode: 'skip', reloan: 14500 }
-          ]
+    function createBlankMonthRecord(monthName, year = 2026) {
+      const mIdx = MONTH_INDEX[monthName] || '01';
+      return {
+        initialized: true,
+        carriedOverFrom: null,
+        paydays: {
+          dec5: { dayNum: '5', badge: 'Your Cutoff', ownerLabel: '(You)', days: 10, rangeText: '5 – 14', salary: 0, bills: [] },
+          dec15: { dayNum: '15', badge: "Husband's Cutoff", ownerLabel: '(Husband)', days: 5, rangeText: '15 – 19', salary: 0, bills: [] },
+          dec20: { dayNum: '20', badge: 'Your Cutoff', ownerLabel: '(You)', days: 10, rangeText: '20 – 29', salary: 0, bills: [] },
+          dec30: { dayNum: '30', badge: "Husband's Cutoff", ownerLabel: '(Husband)', days: 6, rangeText: '30 – 4', salary: 0, bills: [] }
         },
-        dec15: {
-          dayNum: '15',
-          badge: "Husband's Cutoff",
-          ownerLabel: '(Husband)',
-          days: 5,
-          rangeText: '15 – 19',
-          salary: 20000,
-          bills: [
-            { id: 'h1', name: 'Groceries & Household Needs', due: '2026-12-15', amount: 5000, mode: 'full', reloan: 0 },
-            { id: 'h2', name: 'Gas & Toll Allowance', due: '2026-12-15', amount: 2500, mode: 'full', reloan: 0 }
-          ]
-        },
-        dec20: {
-          dayNum: '20',
-          badge: 'Your Cutoff',
-          ownerLabel: '(You)',
-          days: 10,
-          rangeText: '20 – 29',
-          salary: 25000,
-          bills: [
-            { id: 'c1', name: 'Car Loan', due: '2026-12-20', amount: 15503, mode: 'full', reloan: 0 },
-            { id: 'c2', name: 'Maya Loan', due: '2026-12-25', amount: 6025, mode: 'reloan', reloan: 5500 },
-            { id: 'c3', name: 'WiFi (Minimum Due)', due: '2026-12-27', amount: 1899, mode: 'full', reloan: 0 },
-            { id: 'c4', name: 'Utility (Ilaw SOA)', due: '2026-12-25', amount: 4500, mode: 'skip', reloan: 0 },
-            { id: 'c5', name: 'Water Bill', due: '2026-12-30', amount: 450, mode: 'skip', reloan: 0 }
-          ]
-        },
-        dec30: {
-          dayNum: '30',
-          badge: "Husband's Cutoff",
-          ownerLabel: '(Husband)',
-          days: 6,
-          rangeText: '30 – 4',
-          salary: 20000,
-          bills: [
-            { id: 'e1', name: 'Groceries / Family Fund', due: '2026-12-30', amount: 4000, mode: 'full', reloan: 0 },
-            { id: 'e2', name: 'Utility (Ilaw) Partial/Full', due: '2027-01-02', amount: 4500, mode: 'full', reloan: 0 }
-          ]
-        }
-      },
-      bonuses: {
-        you13: 30000,
-        youInc: 0,
-        husb13: 20000,
-        husbInc: 0
-      },
-      overdue: [
-        { id: 'o1', name: 'Remaining 50% Utility Arrears', targetDate: '2026-12-15', amount: 8048, status: 'Awaiting Funds' },
-        { id: 'o2', name: 'Tala Loan', targetDate: '2027-01-05', amount: 18882, status: 'Scheduled' }
-      ]
-    };
+        bonuses: { you13: 0, youInc: 0, husb13: 0, husbInc: 0 },
+        overdue: []
+      };
+    }
 
-    const EMPTY_STATE = {
-      selectedMonth: 'December',
-      activeTab: 'overview',
-      adviseTargetId: 'auto',
-      paydays: {
-        dec5: { dayNum: '5', badge: 'Your Cutoff', ownerLabel: '(You)', days: 10, rangeText: '5 – 14', salary: 0, bills: [] },
-        dec15: { dayNum: '15', badge: "Husband's Cutoff", ownerLabel: '(Husband)', days: 5, rangeText: '15 – 19', salary: 0, bills: [] },
-        dec20: { dayNum: '20', badge: 'Your Cutoff', ownerLabel: '(You)', days: 10, rangeText: '20 – 29', salary: 0, bills: [] },
-        dec30: { dayNum: '30', badge: "Husband's Cutoff", ownerLabel: '(Husband)', days: 6, rangeText: '30 – 4', salary: 0, bills: [] }
-      },
-      bonuses: { you13: 0, youInc: 0, husb13: 0, husbInc: 0 },
-      overdue: []
-    };
+    function createDefaultDecemberRecord() {
+      return {
+        initialized: true,
+        carriedOverFrom: null,
+        paydays: {
+          dec5: {
+            dayNum: '5',
+            badge: 'Your Cutoff',
+            ownerLabel: '(You)',
+            days: 10,
+            rangeText: '5 – 14',
+            salary: 30000,
+            bills: [
+              { id: 'b1', name: 'Utility (4 mos arrears)', due: '2026-12-04', amount: 16096, mode: 'partial', reloan: 0 },
+              { id: 'b2', name: 'Maya Loan', due: '2026-12-05', amount: 6025, mode: 'reloan', reloan: 5500 },
+              { id: 'b3', name: 'Smart Postpaid', due: '2026-12-05', amount: 5396, mode: 'full', reloan: 0 },
+              { id: 'b4', name: 'Home Credit', due: '2026-12-07', amount: 3946, mode: 'full', reloan: 0 },
+              { id: 'b5', name: 'Renewable Loan', due: '2026-12-08', amount: 11000, mode: 'reloan', reloan: 15000 },
+              { id: 'b6', name: 'Tala Loan', due: '2027-01-05', amount: 18882, mode: 'skip', reloan: 14500 }
+            ]
+          },
+          dec15: {
+            dayNum: '15',
+            badge: "Husband's Cutoff",
+            ownerLabel: '(Husband)',
+            days: 5,
+            rangeText: '15 – 19',
+            salary: 20000,
+            bills: [
+              { id: 'h1', name: 'Groceries & Household Needs', due: '2026-12-15', amount: 5000, mode: 'full', reloan: 0 },
+              { id: 'h2', name: 'Gas & Toll Allowance', due: '2026-12-15', amount: 2500, mode: 'full', reloan: 0 }
+            ]
+          },
+          dec20: {
+            dayNum: '20',
+            badge: 'Your Cutoff',
+            ownerLabel: '(You)',
+            days: 10,
+            rangeText: '20 – 29',
+            salary: 25000,
+            bills: [
+              { id: 'c1', name: 'Car Loan', due: '2026-12-20', amount: 15503, mode: 'full', reloan: 0 },
+              { id: 'c2', name: 'Maya Loan', due: '2026-12-25', amount: 6025, mode: 'reloan', reloan: 5500 },
+              { id: 'c3', name: 'WiFi (Minimum Due)', due: '2026-12-27', amount: 1899, mode: 'full', reloan: 0 },
+              { id: 'c4', name: 'Utility (Ilaw SOA)', due: '2026-12-25', amount: 4500, mode: 'skip', reloan: 0 },
+              { id: 'c5', name: 'Water Bill', due: '2026-12-30', amount: 450, mode: 'skip', reloan: 0 }
+            ]
+          },
+          dec30: {
+            dayNum: '30',
+            badge: "Husband's Cutoff",
+            ownerLabel: '(Husband)',
+            days: 6,
+            rangeText: '30 – 4',
+            salary: 20000,
+            bills: [
+              { id: 'e1', name: 'Groceries / Family Fund', due: '2026-12-30', amount: 4000, mode: 'full', reloan: 0 },
+              { id: 'e2', name: 'Utility (Ilaw) Partial/Full', due: '2027-01-02', amount: 4500, mode: 'full', reloan: 0 }
+            ]
+          }
+        },
+        bonuses: {
+          you13: 30000,
+          youInc: 0,
+          husb13: 20000,
+          husbInc: 0
+        },
+        overdue: [
+          { id: 'o1', name: 'Remaining 50% Utility Arrears', targetDate: '2026-12-15', amount: 8048, status: 'Awaiting Funds' },
+          { id: 'o2', name: 'Tala Loan', targetDate: '2027-01-05', amount: 18882, status: 'Scheduled' }
+        ]
+      };
+    }
 
-    function normalizeDateString(raw, fallbackDay = '15') {
-      if (!raw) return `2026-12-${fallbackDay}`;
+    function buildDefaultRootState() {
+      const months = {};
+      MONTH_NAMES.forEach(m => {
+        months[m] = m === 'December' ? createDefaultDecemberRecord() : createBlankMonthRecord(m);
+      });
+      return {
+        selectedMonth: 'December',
+        activeTab: 'overview',
+        adviseTargetId: 'auto',
+        months
+      };
+    }
+
+    function normalizeDateString(raw, fallbackMonth = 'December', fallbackDay = '15') {
+      const mIdx = MONTH_INDEX[fallbackMonth] || '12';
+      const yDefault = fallbackMonth === 'January' ? '2027' : '2026';
+      if (!raw) return `${yDefault}-${mIdx}-${fallbackDay}`;
       if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
       const parsed = new Date(raw);
       if (!isNaN(parsed.getTime())) {
-        const y = parsed.getFullYear() < 2000 ? 2026 : parsed.getFullYear();
+        const y = parsed.getFullYear() < 2000 ? Number(yDefault) : parsed.getFullYear();
         const m = String(parsed.getMonth() + 1).padStart(2, '0');
         const d = String(parsed.getDate()).padStart(2, '0');
         return `${y}-${m}-${d}`;
       }
-      return `2026-12-${fallbackDay}`;
+      return `${yDefault}-${mIdx}-${fallbackDay}`;
+    }
+
+    // Migrate legacy single-month state structure into per-month structure
+    function migrateToMonthlyRoot(rawObj) {
+      const base = buildDefaultRootState();
+      if (!rawObj) return base;
+
+      if (rawObj.months && typeof rawObj.months === 'object') {
+        base.selectedMonth = MONTH_NAMES.includes(rawObj.selectedMonth) ? rawObj.selectedMonth : 'December';
+        base.activeTab = rawObj.activeTab || 'overview';
+        base.adviseTargetId = rawObj.adviseTargetId || 'auto';
+        MONTH_NAMES.forEach(m => {
+          if (rawObj.months[m]) {
+            base.months[m] = {
+              ...createBlankMonthRecord(m),
+              ...rawObj.months[m],
+              paydays: {
+                ...createBlankMonthRecord(m).paydays,
+                ...(rawObj.months[m].paydays || {})
+              },
+              bonuses: {
+                ...createBlankMonthRecord(m).bonuses,
+                ...(rawObj.months[m].bonuses || {})
+              },
+              overdue: Array.isArray(rawObj.months[m].overdue) ? rawObj.months[m].overdue : []
+            };
+          }
+        });
+        return base;
+      }
+
+      // Legacy flat structure fallback
+      const targetM = MONTH_NAMES.includes(rawObj.selectedMonth) ? rawObj.selectedMonth : 'December';
+      base.selectedMonth = targetM;
+      base.activeTab = rawObj.activeTab || 'overview';
+      base.adviseTargetId = rawObj.adviseTargetId || 'auto';
+      base.months[targetM] = {
+        initialized: true,
+        carriedOverFrom: null,
+        paydays: {
+          ...createBlankMonthRecord(targetM).paydays,
+          ...(rawObj.paydays || {})
+        },
+        bonuses: {
+          ...createBlankMonthRecord(targetM).bonuses,
+          ...(rawObj.bonuses || {})
+        },
+        overdue: Array.isArray(rawObj.overdue) ? rawObj.overdue : []
+      };
+      return base;
     }
 
     function encodeStateToBase64Url(obj) {
@@ -791,50 +864,111 @@
     }
 
     function loadInitialState() {
-      // 1. Check URL hash (#sync=...) first for cross-device carry-over
       try {
         const hash = window.location.hash || '';
         const match = hash.match(/sync=([^&]+)/);
         if (match && match[1]) {
           const fromHash = decodeStateFromBase64Url(match[1]);
-          if (fromHash && fromHash.paydays) {
-            return fromHash;
+          if (fromHash) {
+            return migrateToMonthlyRoot(fromHash);
           }
         }
       } catch (e) {
         console.warn('Invalid sync hash ignored:', e);
       }
 
-      // 2. Check localStorage (with fallback to older keys or memory)
       try {
         const raw = localStorage.getItem(STORAGE_KEY)
+          || localStorage.getItem('emijrd_simple_cashflow_v5')
           || localStorage.getItem('emijrd_simple_cashflow_v4')
           || localStorage.getItem('emijrd_simple_cashflow_v3');
         if (raw) {
-          return JSON.parse(raw);
+          return migrateToMonthlyRoot(JSON.parse(raw));
         }
       } catch (e) {
-        storageAvailable = false;
+        console.warn('Storage read error:', e);
       }
 
-      return JSON.parse(JSON.stringify(DEFAULT_STATE));
+      return buildDefaultRootState();
     }
 
     let state = loadInitialState();
-    if (!state.selectedMonth) state.selectedMonth = 'December';
-    if (!state.adviseTargetId) state.adviseTargetId = 'auto';
 
-    Object.keys(state.paydays || {}).forEach(k => {
-      const dayPad = String(state.paydays[k].dayNum || '15').padStart(2, '0');
-      (state.paydays[k].bills || []).forEach(b => {
-        b.due = normalizeDateString(b.due, dayPad);
+    function getPreviousMonthName(monthName) {
+      const idx = MONTH_NAMES.indexOf(monthName);
+      if (idx === -1) return 'December';
+      return MONTH_NAMES[(idx + 11) % 12];
+    }
+
+    function getMonthRecord(monthName = state.selectedMonth) {
+      const m = MONTH_NAMES.includes(monthName) ? monthName : 'December';
+      if (!state.months[m]) {
+        state.months[m] = createBlankMonthRecord(m);
+      }
+      return state.months[m];
+    }
+
+    // Carry over remaining overdue bills from previous month into target month
+    function carryOverOverdueToMonth(targetMonth, overwriteExisting = false) {
+      const prevMonth = getPreviousMonthName(targetMonth);
+      const prevRec = getMonthRecord(prevMonth);
+      const targetRec = getMonthRecord(targetMonth);
+
+      const prevOverdue = (prevRec.overdue || []).filter(o => (Number(o.amount) || 0) > 0);
+      if (prevOverdue.length === 0) return false;
+
+      if (!overwriteExisting && targetRec.overdue && targetRec.overdue.length > 0) {
+        return false;
+      }
+
+      const mIdx = MONTH_INDEX[targetMonth] || '01';
+      const yStr = (targetMonth === 'January' && prevMonth === 'December') ? '2027' : '2026';
+
+      const carriedItems = prevOverdue.map((item, idx) => {
+        const origDay = /^\d{4}-\d{2}-\d{2}$/.test(item.targetDate) ? item.targetDate.slice(8, 10) : '15';
+        return {
+          id: `co_${targetMonth}_${Date.now()}_${idx}`,
+          name: item.name,
+          targetDate: `${yStr}-${mIdx}-${origDay}`,
+          amount: Math.round((Number(item.amount) || 0) * 100) / 100,
+          status: `Carried Over (${MONTH_SHORT[prevMonth]})`
+        };
       });
-    });
-    (state.overdue || []).forEach(o => {
-      o.targetDate = normalizeDateString(o.targetDate, '15');
-    });
 
-    function updateSaveBadge(label = 'Auto-Saved', isWarning = false) {
+      if (overwriteExisting && targetRec.overdue && targetRec.overdue.length > 0) {
+        const existingNames = new Set(targetRec.overdue.map(x => `${x.name.toLowerCase()}|${Number(x.amount)}`));
+        const deduped = carriedItems.filter(c => !existingNames.has(`${c.name.toLowerCase()}|${Number(c.amount)}`));
+        targetRec.overdue = [...targetRec.overdue, ...deduped];
+      } else {
+        targetRec.overdue = carriedItems;
+      }
+
+      targetRec.carriedOverFrom = prevMonth;
+      targetRec.initialized = true;
+      return true;
+    }
+
+    function ensureMonthInitializedWithCarryOver(monthName) {
+      const rec = getMonthRecord(monthName);
+      if (!rec.initialized) {
+        rec.initialized = true;
+        carryOverOverdueToMonth(monthName, false);
+      }
+      // Normalize dates in month record
+      Object.keys(rec.paydays || {}).forEach(k => {
+        const dayPad = String(rec.paydays[k].dayNum || '15').padStart(2, '0');
+        (rec.paydays[k].bills || []).forEach(b => {
+          b.due = normalizeDateString(b.due, monthName, dayPad);
+        });
+      });
+      (rec.overdue || []).forEach(o => {
+        o.targetDate = normalizeDateString(o.targetDate, monthName, '15');
+      });
+    }
+
+    ensureMonthInitializedWithCarryOver(state.selectedMonth);
+
+    function updateSaveBadge(label = 'Auto-Saved Per Month', isWarning = false) {
       const badge = document.getElementById('saveStatusBadge');
       if (!badge) return;
       badge.textContent = label;
@@ -849,17 +983,15 @@
       memoryFallbackState = JSON.parse(JSON.stringify(state));
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        storageAvailable = true;
-        updateSaveBadge('Auto-Saved');
+        updateSaveBadge(`Saved: ${state.selectedMonth}`);
       } catch (e) {
-        storageAvailable = false;
         updateSaveBadge('Session Only (Export JSON)', true);
       }
     }
 
     function exportBackupJson() {
       const payload = {
-        app: 'EMIJRD_Sweldo_Liquidation',
+        app: 'EMIJRD_Sweldo_Liquidation_Monthly',
         exportedAt: new Date().toISOString(),
         data: state
       };
@@ -868,7 +1000,7 @@
       const a = document.createElement('a');
       const monthSlug = (state.selectedMonth || 'December').toLowerCase();
       a.href = url;
-      a.download = `emijrd-liquidation-${monthSlug}.json`;
+      a.download = `emijrd-liquidation-all-months-${monthSlug}.json`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -884,17 +1016,17 @@
       reader.onload = function(e) {
         try {
           const parsed = JSON.parse(e.target.result);
-          const importedData = parsed && parsed.data && parsed.data.paydays ? parsed.data : parsed;
-          if (!importedData || !importedData.paydays) {
+          const rawData = parsed && parsed.data ? parsed.data : parsed;
+          if (!rawData || (!rawData.months && !rawData.paydays)) {
             alert('Hindi valid ang napiling JSON backup file.');
             return;
           }
-          state = JSON.parse(JSON.stringify(DEFAULT_STATE));
-          Object.assign(state, importedData);
+          state = migrateToMonthlyRoot(rawData);
+          ensureMonthInitializedWithCarryOver(state.selectedMonth);
           saveState();
           render();
           updateSaveBadge('Backup Restored');
-          alert('Matagumpay na na-restore ang iyong data!');
+          alert('Matagumpay na na-restore ang iyong monthly records!');
         } catch (err) {
           alert('May error sa pagbasa ng JSON file.');
         } finally {
@@ -975,6 +1107,7 @@
 
     function changeMonth(month) {
       state.selectedMonth = month;
+      ensureMonthInitializedWithCarryOver(month);
       saveState();
       render();
     }
@@ -986,17 +1119,19 @@
     }
 
     function updateSalary(val) {
+      const rec = getMonthRecord();
       const tab = state.activeTab;
-      if (state.paydays[tab]) {
-        state.paydays[tab].salary = Math.max(0, Number(val) || 0);
+      if (rec.paydays[tab]) {
+        rec.paydays[tab].salary = Math.max(0, Number(val) || 0);
         saveState();
         renderPaydayCalculations();
       }
     }
 
     function updateBill(id, field, value, skipRender = false) {
+      const rec = getMonthRecord();
       const tab = state.activeTab;
-      const bill = state.paydays[tab].bills.find(b => b.id === id);
+      const bill = rec.paydays[tab].bills.find(b => b.id === id);
       if (!bill) return;
 
       if (field === 'amount' || field === 'reloan') {
@@ -1013,13 +1148,15 @@
     }
 
     function addBillRow() {
+      const rec = getMonthRecord();
       const tab = state.activeTab;
       const mIdx = MONTH_INDEX[state.selectedMonth] || '12';
-      const dayPad = String(state.paydays[tab].dayNum || '15').padStart(2, '0');
-      state.paydays[tab].bills.push({
+      const yStr = state.selectedMonth === 'January' ? '2027' : '2026';
+      const dayPad = String(rec.paydays[tab].dayNum || '15').padStart(2, '0');
+      rec.paydays[tab].bills.push({
         id: 'b_' + Date.now(),
         name: 'New Bill / Expense',
-        due: `2026-${mIdx}-${dayPad}`,
+        due: `${yStr}-${mIdx}-${dayPad}`,
         amount: 1000,
         mode: 'full',
         reloan: 0
@@ -1029,24 +1166,28 @@
     }
 
     function removeBillRow(id) {
+      const rec = getMonthRecord();
       const tab = state.activeTab;
-      state.paydays[tab].bills = state.paydays[tab].bills.filter(b => b.id !== id);
+      rec.paydays[tab].bills = rec.paydays[tab].bills.filter(b => b.id !== id);
       saveState();
       render();
     }
 
     function updateBonus(key, val) {
-      state.bonuses[key] = Math.max(0, Number(val) || 0);
+      const rec = getMonthRecord();
+      rec.bonuses[key] = Math.max(0, Number(val) || 0);
       saveState();
       renderBonusSummaryOnly();
     }
 
     function addOverdueRow() {
+      const rec = getMonthRecord();
       const mIdx = MONTH_INDEX[state.selectedMonth] || '12';
-      state.overdue.push({
+      const yStr = state.selectedMonth === 'January' ? '2027' : '2026';
+      rec.overdue.push({
         id: 'o_' + Date.now(),
         name: 'Pending Loan / Balance',
-        targetDate: `2026-${mIdx}-15`,
+        targetDate: `${yStr}-${mIdx}-15`,
         amount: 2000,
         status: 'Awaiting Funds'
       });
@@ -1054,8 +1195,23 @@
       renderOverdueView();
     }
 
+    function pullOverdueFromPreviousMonth(notifyUser = false) {
+      const prevMonth = getPreviousMonthName(state.selectedMonth);
+      const added = carryOverOverdueToMonth(state.selectedMonth, true);
+      saveState();
+      render();
+      if (notifyUser) {
+        if (added) {
+          alert(`Na-pull ang natitirang overdue items mula sa ${prevMonth} papuntang ${state.selectedMonth}.`);
+        } else {
+          alert(`Walang bagong overdue balance na ma-carry over mula sa ${prevMonth}.`);
+        }
+      }
+    }
+
     function updateOverdue(id, field, val, skipRender = false) {
-      const item = state.overdue.find(o => o.id === id);
+      const rec = getMonthRecord();
+      const item = rec.overdue.find(o => o.id === id);
       if (!item) return;
       if (field === 'amount') {
         item.amount = Math.max(0, Number(val) || 0);
@@ -1075,7 +1231,8 @@
     }
 
     function removeOverdue(id) {
-      state.overdue = state.overdue.filter(o => o.id !== id);
+      const rec = getMonthRecord();
+      rec.overdue = rec.overdue.filter(o => o.id !== id);
       if (state.adviseTargetId === id) {
         state.adviseTargetId = 'auto';
       }
@@ -1084,20 +1241,20 @@
     }
 
     function clearAllData() {
-      if (confirm('Sigurado ka bang gusto mong i-CLEAR ALL ang lahat ng data at gawing zero ang lahat?')) {
-        const currentMonth = state.selectedMonth;
-        const currentTab = state.activeTab;
-        state = JSON.parse(JSON.stringify(EMPTY_STATE));
-        state.selectedMonth = currentMonth;
-        state.activeTab = currentTab;
+      const m = state.selectedMonth;
+      if (confirm(`I-clear ang lahat ng entries (sahod, bills, bonus, overdue) para sa ${m} lang? Hindi maaapektuhan ang ibang buwan.`)) {
+        state.months[m] = createBlankMonthRecord(m);
+        state.months[m].initialized = true;
         saveState();
         render();
       }
     }
 
     function resetToDefault() {
-      if (confirm('I-reset ang lahat ng figures sa original computation?')) {
-        state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+      const m = state.selectedMonth;
+      if (confirm(`I-reset ang data ng ${m} sa default?`)) {
+        state.months[m] = m === 'December' ? createDefaultDecemberRecord() : createBlankMonthRecord(m);
+        state.months[m].initialized = true;
         saveState();
         render();
       }
@@ -1120,7 +1277,8 @@
     }
 
     function getPaydayTotals(key) {
-      const pd = state.paydays[key];
+      const rec = getMonthRecord();
+      const pd = rec.paydays[key];
       if (!pd) return { salary: 0, outflow: 0, inflow: 0, net: 0, days: 0 };
       let outflow = 0;
       let inflow = 0;
@@ -1140,11 +1298,12 @@
     }
 
     function getTotalOverdueAmount() {
-      return state.overdue.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+      const rec = getMonthRecord();
+      return (rec.overdue || []).reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
     }
 
     function getTotalBonusAmount() {
-      const b = state.bonuses;
+      const b = getMonthRecord().bonuses || {};
       return (Number(b.you13) || 0) + (Number(b.youInc) || 0) + (Number(b.husb13) || 0) + (Number(b.husbInc) || 0);
     }
 
@@ -1161,7 +1320,8 @@
     }
 
     function getOrderedOverdueItems() {
-      const items = [...state.overdue];
+      const rec = getMonthRecord();
+      const items = [...(rec.overdue || [])];
       if (state.adviseTargetId && state.adviseTargetId !== 'auto') {
         const idx = items.findIndex(i => i.id === state.adviseTargetId);
         if (idx > 0) {
@@ -1260,7 +1420,8 @@
       const selectEl = document.getElementById('adviseTargetSelect');
       if (!selectEl) return;
 
-      const validIds = new Set(state.overdue.map(o => o.id));
+      const overdueList = getMonthRecord().overdue || [];
+      const validIds = new Set(overdueList.map(o => o.id));
       if (state.adviseTargetId !== 'auto' && !validIds.has(state.adviseTargetId)) {
         state.adviseTargetId = 'auto';
       }
@@ -1269,7 +1430,7 @@
         `<option value="auto" ${state.adviseTargetId === 'auto' ? 'selected' : ''}>Auto-Priority (Unahin ang unang due)</option>`
       ];
 
-      state.overdue.forEach(item => {
+      overdueList.forEach(item => {
         const selected = state.adviseTargetId === item.id ? 'selected' : '';
         options.push(
           `<option value="${item.id}" ${selected}>${item.name} — Due ${formatDisplayDate(item.targetDate)} (${fmt(item.amount)})</option>`
@@ -1284,8 +1445,17 @@
       const mShort = MONTH_SHORT[mFull] || 'Dec';
       const nextMShort = getNextMonthShort(mFull);
       const lastDay = getLastDayOfMonth(mFull);
+      const rec = getMonthRecord(mFull);
 
       document.getElementById('overviewHeading').textContent = `${mFull} Cashflow Overview`;
+
+      const coNotice = document.getElementById('ovCarryOverNotice');
+      if (rec.carriedOverFrom && getTotalOverdueAmount() > 0) {
+        coNotice.textContent = `Carried Over Overdue from ${rec.carriedOverFrom}`;
+        coNotice.classList.remove('hidden');
+      } else {
+        coNotice.classList.add('hidden');
+      }
 
       const p5 = getPaydayTotals('dec5');
       const p15 = getPaydayTotals('dec15');
@@ -1361,6 +1531,7 @@
     }
 
     function renderOverdueAdviseSection(netCash, days) {
+      const rec = getMonthRecord();
       const totalOverdue = getTotalOverdueAmount();
       const msgEl = document.getElementById('overdueAdviseMessage');
       const controlsEl = document.getElementById('overdueAdviseControls');
@@ -1415,8 +1586,9 @@
     }
 
     function applyAdvisePayment() {
+      const rec = getMonthRecord();
       let toPay = parseFormattedNumber(document.getElementById('advisePayInput').value);
-      if (toPay <= 0 || state.overdue.length === 0) return;
+      if (toPay <= 0 || !rec.overdue || rec.overdue.length === 0) return;
 
       const allocations = computeOverdueAllocations(toPay);
       const paidSummary = allocations
@@ -1427,7 +1599,7 @@
       if (!confirm(`Ibawas ang ${fmt(toPay)} sa sumusunod:\n• ${paidSummary}`)) return;
 
       const allocMap = new Map(allocations.map(a => [a.id, a]));
-      state.overdue = state.overdue
+      rec.overdue = rec.overdue
         .map(item => {
           const hit = allocMap.get(item.id);
           if (!hit || hit.allocated <= 0) return item;
@@ -1440,7 +1612,7 @@
         })
         .filter(item => Number(item.amount) > 0);
 
-      if (state.adviseTargetId !== 'auto' && !state.overdue.some(i => i.id === state.adviseTargetId)) {
+      if (state.adviseTargetId !== 'auto' && !rec.overdue.some(i => i.id === state.adviseTargetId)) {
         state.adviseTargetId = 'auto';
       }
 
@@ -1449,8 +1621,9 @@
     }
 
     function renderPaydayCalculations() {
+      const rec = getMonthRecord();
       const tab = state.activeTab;
-      const data = state.paydays[tab];
+      const data = rec.paydays[tab];
       if (!data) return;
 
       let totalOutflow = 0;
@@ -1525,7 +1698,8 @@
     }
 
     function renderBonusView() {
-      const b = state.bonuses;
+      const b = getMonthRecord().bonuses || {};
+      document.getElementById('bonusHeading').textContent = `${state.selectedMonth} — 13th Month Pay, Incentives & Bonuses`;
       document.getElementById('bonusYou13').value = fmtInputVal(b.you13);
       document.getElementById('bonusYouInc').value = fmtInputVal(b.youInc);
       document.getElementById('bonusHusb13').value = fmtInputVal(b.husb13);
@@ -1534,15 +1708,18 @@
     }
 
     function renderOverdueView() {
+      const rec = getMonthRecord();
       const container = document.getElementById('overdueContainer');
       container.innerHTML = '';
       let total = 0;
 
-      if (state.overdue.length === 0) {
-        container.innerHTML = `<div class="text-center py-6 text-xs text-slate-400">Walang nakalistang pending o overdue loans. I-click ang "+ Add Pending" kung may idadagdag.</div>`;
+      document.getElementById('overdueHeading').textContent = `${state.selectedMonth} — Pending Overdue Loans & Deferred Arrears`;
+
+      if (!rec.overdue || rec.overdue.length === 0) {
+        container.innerHTML = `<div class="text-center py-6 text-xs text-slate-400">Walang nakalistang pending o overdue loans sa ${state.selectedMonth}. I-click ang "+ Add Pending" o "Pull Prev Month Overdue".</div>`;
       }
 
-      state.overdue.forEach(item => {
+      (rec.overdue || []).forEach(item => {
         total += Number(item.amount) || 0;
         const row = document.createElement('div');
         row.className = 'slot-row p-3.5 grid grid-cols-1 md:grid-cols-12 gap-3 items-center min-w-0';
@@ -1579,6 +1756,7 @@
     function render() {
       const mFull = state.selectedMonth || 'December';
       const mShort = MONTH_SHORT[mFull] || 'Dec';
+      const rec = getMonthRecord(mFull);
       document.getElementById('monthSelector').value = mFull;
 
       const tabConfigs = [
@@ -1632,7 +1810,7 @@
       }
 
       paydayView.classList.remove('hidden');
-      const data = state.paydays[state.activeTab];
+      const data = rec.paydays[state.activeTab];
       const dayNum = data.dayNum || '5';
       const ownerSuffix = data.ownerLabel === '(Husband)' ? ' (Husband)' : '';
 
@@ -1645,7 +1823,7 @@
       container.innerHTML = '';
 
       if (data.bills.length === 0) {
-        container.innerHTML = `<div class="text-center py-6 text-xs text-slate-400">Walang nakalistang bills sa cutoff na ito. I-click ang "+ Add Bill" para magdagdag.</div>`;
+        container.innerHTML = `<div class="text-center py-6 text-xs text-slate-400">Walang nakalistang bills sa cutoff na ito para sa ${mFull}. I-click ang "+ Add Bill" para magdagdag.</div>`;
       }
 
       data.bills.forEach(bill => {
@@ -1714,6 +1892,7 @@
 
     function copySummary() {
       const tab = state.activeTab;
+      const rec = getMonthRecord();
       const mFull = state.selectedMonth || 'December';
       const mShort = MONTH_SHORT[mFull] || 'Dec';
       const nextMShort = getNextMonthShort(mFull);
@@ -1743,8 +1922,8 @@
         return;
       }
 
-      if (!state.paydays[tab]) return;
-      const data = state.paydays[tab];
+      if (!rec.paydays[tab]) return;
+      const data = rec.paydays[tab];
       const titleText = `${mFull} ${data.dayNum || ''} Salary`.toUpperCase();
 
       let lines = [`EMIJRD ONLINE SERVICES — ${titleText}`, `Sahod: ${fmt(data.salary)}`, `---`];
@@ -1784,7 +1963,6 @@
       setTimeout(() => btn.textContent = 'Copy Checklist', 1500);
     }
 
-    // Persist initial state immediately and verify storage availability
     saveState();
     render();
   </script>
