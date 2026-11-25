@@ -108,6 +108,28 @@
       </div>
 
       <div class="flex flex-wrap items-center gap-2 self-start lg:self-auto shrink-0">
+        <!-- MONTH SELECTOR -->
+        <div class="flex items-center gap-1.5 bg-slate-900 border border-cyan-500/40 rounded-xl px-2.5 py-1">
+          <span class="text-[11px] font-bold text-cyan-300 uppercase">Month:</span>
+          <select id="monthSelector" onchange="changeMonth(this.value)" class="bg-transparent text-xs font-extrabold text-white outline-none cursor-pointer">
+            <option value="January" class="bg-slate-950">January</option>
+            <option value="February" class="bg-slate-950">February</option>
+            <option value="March" class="bg-slate-950">March</option>
+            <option value="April" class="bg-slate-950">April</option>
+            <option value="May" class="bg-slate-950">May</option>
+            <option value="June" class="bg-slate-950">June</option>
+            <option value="July" class="bg-slate-950">July</option>
+            <option value="August" class="bg-slate-950">August</option>
+            <option value="September" class="bg-slate-950">September</option>
+            <option value="October" class="bg-slate-950">October</option>
+            <option value="November" class="bg-slate-950">November</option>
+            <option value="December" class="bg-slate-950">December</option>
+          </select>
+        </div>
+
+        <button onclick="clearAllData()" class="px-3.5 py-1.5 bg-rose-950/80 hover:bg-rose-900 text-rose-200 rounded-xl border border-rose-700/70 text-xs font-bold transition-all whitespace-nowrap">
+          Clear All
+        </button>
         <button onclick="resetToDefault()" class="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-200 rounded-xl border border-slate-700 text-xs font-bold transition-all whitespace-nowrap">
           Reset Default
         </button>
@@ -146,7 +168,7 @@
     </div>
 
     <!-- =========================================================
-         VIEW A: SINGLE PAYDAY LIQUIDATION (DEC 5, 15, 20, OR 30)
+         VIEW A: SINGLE PAYDAY LIQUIDATION (5, 15, 20, OR 30)
          ========================================================= -->
     <div id="paydayView" class="space-y-5">
 
@@ -160,7 +182,7 @@
               <span id="paydayBadge" class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-cyan-950/80 text-cyan-300 border border-cyan-800/60">
                 Your Cutoff
               </span>
-              <span id="daysCoverLabel" class="text-xs text-slate-400 font-medium">Covers 10 days (Dec 5–14)</span>
+              <span id="daysCoverLabel" class="text-xs text-slate-400 font-medium">Covers 10 days</span>
             </div>
             <h2 id="paydayTitle" class="text-lg font-extrabold text-white mt-2.5">December 5 Salary</h2>
 
@@ -257,11 +279,11 @@
           </div>
           <div class="slot-row p-3.5 min-w-0">
             <div class="flex justify-between items-center gap-2 mb-1">
-              <span class="text-slate-300 font-semibold">Christmas / Handaan Fund</span>
+              <span class="text-slate-300 font-semibold">Savings / Handaan Fund</span>
               <span class="text-[11px] text-amber-300 font-bold shrink-0">25%</span>
             </div>
             <div id="splitHoliday" class="text-lg font-extrabold text-amber-300">₱0</div>
-            <p class="text-[11px] text-slate-400 mt-1">Itabi para sa Noche Buena / Media Noche</p>
+            <p class="text-[11px] text-slate-400 mt-1">Itabi para sa special expenses / goals</p>
           </div>
           <div class="slot-row p-3.5 min-w-0">
             <div class="flex justify-between items-center gap-2 mb-1">
@@ -270,6 +292,48 @@
             </div>
             <div id="splitBuffer" class="text-lg font-extrabold text-emerald-400">₱0</div>
             <p class="text-[11px] text-slate-400 mt-1">Huwag galawin para hindi kapusin</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- OVERDUE BILLS & LOANS ADVISE SECTION (AT THE VERY BOTTOM) -->
+      <div id="overdueAdviseSection" class="glass-card p-5 rounded-2xl shadow-sm border-l-4 border-l-rose-500 min-w-0">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-rose-950/80 text-rose-300 border border-rose-700/60">
+              Smart Overdue Advise
+            </span>
+            <h3 class="text-base font-extrabold text-white mt-1.5">Payo para sa Pending / Overdue Bills &amp; Loans</h3>
+          </div>
+          <button onclick="switchTab('overdue')" class="text-xs font-bold text-cyan-300 hover:text-cyan-200 underline">
+            Tingnan ang Overdue List →
+          </button>
+        </div>
+
+        <p id="overdueAdviseMessage" class="text-xs text-slate-300 leading-relaxed mb-4"></p>
+
+        <div id="overdueAdviseControls" class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end bg-slate-950/90 border border-slate-800 p-3.5 rounded-xl">
+          <div>
+            <label class="text-[11px] font-semibold text-slate-400 block mb-1">Current Overdue Total</label>
+            <div id="adviseCurrentOverdue" class="text-base font-extrabold text-rose-400">₱0</div>
+          </div>
+
+          <div>
+            <label class="text-[11px] font-semibold text-amber-300 block mb-1">Advised Payment (Pwede i-edit ₱)</label>
+            <input type="number" id="advisePayInput" oninput="recalcOverdueRemaining(this.value)"
+              class="w-full bg-slate-900 border border-amber-500/50 focus:border-amber-400 rounded-lg px-3 py-1.5 text-sm font-extrabold text-amber-300 outline-none" />
+          </div>
+
+          <div>
+            <label class="text-[11px] font-semibold text-cyan-300 block mb-1">Remaining Balance (Overdue Only)</label>
+            <div id="adviseRemainingOverdue" class="text-base font-extrabold text-cyan-300">₱0</div>
+          </div>
+
+          <div class="flex justify-start md:justify-end">
+            <button onclick="applyAdvisePayment()" id="applyAdviseBtn"
+              class="w-full md:w-auto px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-extrabold shadow transition whitespace-nowrap">
+              Ibawas sa Overdue List
+            </button>
           </div>
         </div>
       </div>
@@ -284,10 +348,10 @@
         <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-800">
           <div class="min-w-0">
             <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-700/60">
-              Year-End Extra Funds
+              Extra Funds Pool
             </span>
             <h2 class="text-lg font-extrabold text-white mt-1.5">13th Month Pay, Incentives &amp; Bonuses</h2>
-            <p class="text-xs text-slate-400">Hiwalay ito sa regular sahod para makita mo kung magkano ang pwedeng pambayad sa malalaking utang o pang-handa.</p>
+            <p class="text-xs text-slate-400">Hiwalay ito sa regular sahod para makita mo kung magkano ang pwedeng pambayad sa malalaking utang o pang-ipon.</p>
           </div>
           <div class="text-left sm:text-right bg-slate-950 px-4 py-3 rounded-xl border border-amber-700/50 shrink-0">
             <span class="text-[11px] text-slate-400 block">Total Bonus Pool</span>
@@ -357,7 +421,7 @@
 
   </main>
 
-  <!-- FOOTER (MATCHING CLEANER SCHEDULE MANAGER) -->
+  <!-- FOOTER -->
   <footer class="border-t border-slate-800/90 bg-slate-950/90 py-4 px-4">
     <div class="w-full max-w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-400">
       <div class="flex items-center gap-2">
@@ -369,16 +433,24 @@
   </footer>
 
   <script>
-    const STORAGE_KEY = 'emijrd_simple_cashflow_v1';
+    const STORAGE_KEY = 'emijrd_simple_cashflow_v2';
+
+    const MONTH_SHORT = {
+      January: 'Jan', February: 'Feb', March: 'Mar', April: 'Apr',
+      May: 'May', June: 'Jun', July: 'Jul', August: 'Aug',
+      September: 'Sep', October: 'Oct', November: 'Nov', December: 'Dec'
+    };
 
     const DEFAULT_STATE = {
+      selectedMonth: 'December',
       activeTab: 'dec5',
       paydays: {
         dec5: {
-          title: 'December 5 Salary',
+          dayNum: '5',
           badge: 'Your Cutoff',
+          ownerLabel: '(You)',
           days: 10,
-          daysText: 'Covers 10 days (Dec 5 – Dec 14)',
+          rangeText: '5 – 14',
           salary: 30000,
           bills: [
             { id: 'b1', name: 'Utility (4 mos arrears)', due: 'Dec 4', amount: 16096, mode: 'partial', reloan: 0 },
@@ -390,39 +462,42 @@
           ]
         },
         dec15: {
-          title: 'December 15 Salary (Husband)',
+          dayNum: '15',
           badge: "Husband's Cutoff",
+          ownerLabel: '(Husband)',
           days: 5,
-          daysText: 'Covers 5 days (Dec 15 – Dec 19)',
+          rangeText: '15 – 19',
           salary: 20000,
           bills: [
-            { id: 'h1', name: 'Groceries & Household Needs', due: 'Dec 15', amount: 5000, mode: 'full', reloan: 0 },
-            { id: 'h2', name: 'Gas & Toll Allowance', due: 'Dec 15', amount: 2500, mode: 'full', reloan: 0 }
+            { id: 'h1', name: 'Groceries & Household Needs', due: '15th', amount: 5000, mode: 'full', reloan: 0 },
+            { id: 'h2', name: 'Gas & Toll Allowance', due: '15th', amount: 2500, mode: 'full', reloan: 0 }
           ]
         },
         dec20: {
-          title: 'December 20 Salary',
+          dayNum: '20',
           badge: 'Your Cutoff',
+          ownerLabel: '(You)',
           days: 10,
-          daysText: 'Covers 10 days (Dec 20 – Dec 29)',
+          rangeText: '20 – 29',
           salary: 25000,
           bills: [
-            { id: 'c1', name: 'Car Loan', due: 'Dec 20', amount: 15503, mode: 'full', reloan: 0 },
-            { id: 'c2', name: 'Maya Loan', due: 'Dec 25', amount: 6025, mode: 'reloan', reloan: 5500 },
-            { id: 'c3', name: 'WiFi (Minimum Due)', due: 'Dec 27', amount: 1899, mode: 'full', reloan: 0 },
-            { id: 'c4', name: 'Utility (Ilaw SOA)', due: 'Dec 24–25', amount: 4500, mode: 'skip', reloan: 0 },
-            { id: 'c5', name: 'Water Bill', due: 'Late Dec', amount: 450, mode: 'skip', reloan: 0 }
+            { id: 'c1', name: 'Car Loan', due: '20th', amount: 15503, mode: 'full', reloan: 0 },
+            { id: 'c2', name: 'Maya Loan', due: '25th', amount: 6025, mode: 'reloan', reloan: 5500 },
+            { id: 'c3', name: 'WiFi (Minimum Due)', due: '27th', amount: 1899, mode: 'full', reloan: 0 },
+            { id: 'c4', name: 'Utility (Ilaw SOA)', due: '24–25th', amount: 4500, mode: 'skip', reloan: 0 },
+            { id: 'c5', name: 'Water Bill', due: 'End of Month', amount: 450, mode: 'skip', reloan: 0 }
           ]
         },
         dec30: {
-          title: 'December 30 / EOM Salary (Husband)',
+          dayNum: '30',
           badge: "Husband's Cutoff",
+          ownerLabel: '(Husband)',
           days: 6,
-          daysText: 'Covers 6 days (Dec 30 – Jan 4)',
+          rangeText: '30 – 4',
           salary: 20000,
           bills: [
-            { id: 'e1', name: 'Media Noche & New Year Food', due: 'Dec 30', amount: 4000, mode: 'full', reloan: 0 },
-            { id: 'e2', name: 'Dec Utility (Ilaw) Partial/Full', due: 'Early Jan', amount: 4500, mode: 'full', reloan: 0 }
+            { id: 'e1', name: 'Groceries / Family Fund', due: '30th', amount: 4000, mode: 'full', reloan: 0 },
+            { id: 'e2', name: 'Utility (Ilaw) Partial/Full', due: 'Early Next Mo', amount: 4500, mode: 'full', reloan: 0 }
           ]
         }
       },
@@ -433,12 +508,26 @@
         husbInc: 0
       },
       overdue: [
-        { id: 'o1', name: 'Remaining 50% Utility Arrears', targetDate: 'Jan 5 / Bonus', amount: 8048, status: 'Awaiting Funds' },
-        { id: 'o2', name: 'Tala Loan (Due Jan 5, 2027)', targetDate: 'Jan 5, 2027', amount: 18882, status: 'Scheduled Jan 5' }
+        { id: 'o1', name: 'Remaining 50% Utility Arrears', targetDate: 'Next Cutoff / Bonus', amount: 8048, status: 'Awaiting Funds' },
+        { id: 'o2', name: 'Tala Loan', targetDate: 'Jan 5, 2027', amount: 18882, status: 'Scheduled' }
       ]
     };
 
+    const EMPTY_STATE = {
+      selectedMonth: 'December',
+      activeTab: 'dec5',
+      paydays: {
+        dec5: { dayNum: '5', badge: 'Your Cutoff', ownerLabel: '(You)', days: 10, rangeText: '5 – 14', salary: 0, bills: [] },
+        dec15: { dayNum: '15', badge: "Husband's Cutoff", ownerLabel: '(Husband)', days: 5, rangeText: '15 – 19', salary: 0, bills: [] },
+        dec20: { dayNum: '20', badge: 'Your Cutoff', ownerLabel: '(You)', days: 10, rangeText: '20 – 29', salary: 0, bills: [] },
+        dec30: { dayNum: '30', badge: "Husband's Cutoff", ownerLabel: '(Husband)', days: 6, rangeText: '30 – 4', salary: 0, bills: [] }
+      },
+      bonuses: { you13: 0, youInc: 0, husb13: 0, husbInc: 0 },
+      overdue: []
+    };
+
     let state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || JSON.parse(JSON.stringify(DEFAULT_STATE));
+    if (!state.selectedMonth) state.selectedMonth = 'December';
 
     function saveState() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -446,6 +535,12 @@
 
     function fmt(num) {
       return '₱' + Math.round(Number(num) || 0).toLocaleString('en-PH');
+    }
+
+    function changeMonth(month) {
+      state.selectedMonth = month;
+      saveState();
+      render();
     }
 
     function switchTab(tab) {
@@ -534,8 +629,20 @@
       renderOverdueView();
     }
 
+    function clearAllData() {
+      if (confirm('Sigurado ka bang gusto mong i-CLEAR ALL ang lahat ng data at gawing zero ang lahat?')) {
+        const currentMonth = state.selectedMonth;
+        const currentTab = state.activeTab;
+        state = JSON.parse(JSON.stringify(EMPTY_STATE));
+        state.selectedMonth = currentMonth;
+        state.activeTab = currentTab;
+        saveState();
+        render();
+      }
+    }
+
     function resetToDefault() {
-      if (confirm('I-reset ang lahat ng figures sa original Dec 5 & Dec 20 computation?')) {
+      if (confirm('I-reset ang lahat ng figures sa original computation?')) {
         state = JSON.parse(JSON.stringify(DEFAULT_STATE));
         saveState();
         render();
@@ -556,6 +663,82 @@
         return { outflow: amt, inflow: rel, net: rel - amt };
       }
       return { outflow: 0, inflow: 0, net: 0 };
+    }
+
+    function getTotalOverdueAmount() {
+      return state.overdue.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+    }
+
+    function renderOverdueAdviseSection(netCash, days) {
+      const totalOverdue = getTotalOverdueAmount();
+      const msgEl = document.getElementById('overdueAdviseMessage');
+      const controlsEl = document.getElementById('overdueAdviseControls');
+      const currentOverdueEl = document.getElementById('adviseCurrentOverdue');
+      const payInputEl = document.getElementById('advisePayInput');
+      const remainingEl = document.getElementById('adviseRemainingOverdue');
+
+      if (totalOverdue <= 0) {
+        msgEl.innerHTML = `<span class="text-emerald-400 font-bold">Wala kang pending/overdue bills o loans sa watchlist ngayon!</span> Malaya mong magagamit o maiipon ang natirang cash mo.`;
+        controlsEl.classList.add('hidden');
+        return;
+      }
+
+      // Reserve at least ₱400/day for basic daily needs before advising overdue payment
+      const minEssentialReserve = (days || 1) * 400;
+      const extraAvailable = Math.max(0, netCash - minEssentialReserve);
+
+      if (extraAvailable < 300) {
+        msgEl.innerHTML = `May <strong class="text-rose-400">${fmt(totalOverdue)}</strong> ka pang pending/overdue bills &amp; loans, pero sapat lang ang matitirang <strong class="text-white">${fmt(Math.max(0, netCash))}</strong> para sa pang-araw-araw na gastos sa cutoff na ito. <span class="text-amber-300 font-semibold">Advise: I-hold muna ang bayad sa overdue at sa next sahod o bonus na lang bawasan.</span>`;
+        controlsEl.classList.add('hidden');
+        return;
+      }
+
+      // Advise paying 50% of safe extra cash (rounded to nearest 100), capped at totalOverdue
+      let suggestedPay = Math.round((extraAvailable * 0.5) / 100) * 100;
+      if (suggestedPay < 300) suggestedPay = Math.min(extraAvailable, 300);
+      suggestedPay = Math.min(suggestedPay, totalOverdue);
+
+      const remainingOverdue = Math.max(0, totalOverdue - suggestedPay);
+
+      controlsEl.classList.remove('hidden');
+      msgEl.innerHTML = `May sobra kang safe cash sa cutoff na ito! <span class="text-amber-300 font-bold">Advise: Magbayad kahit ${fmt(suggestedPay)}</span> para mabawasan ang overdue balance mo nang hindi nagigipit sa araw-araw na budget.`;
+
+      currentOverdueEl.textContent = fmt(totalOverdue);
+      payInputEl.value = suggestedPay;
+      remainingEl.textContent = fmt(remainingOverdue);
+    }
+
+    function recalcOverdueRemaining(val) {
+      const totalOverdue = getTotalOverdueAmount();
+      const payAmt = Math.max(0, Number(val) || 0);
+      const remaining = Math.max(0, totalOverdue - payAmt);
+      document.getElementById('adviseRemainingOverdue').textContent = fmt(remaining);
+    }
+
+    function applyAdvisePayment() {
+      let toPay = Math.max(0, Number(document.getElementById('advisePayInput').value) || 0);
+      if (toPay <= 0 || state.overdue.length === 0) return;
+
+      if (!confirm(`Ibawas ang ${fmt(toPay)} sa iyong Pending / Overdue Loans list?`)) return;
+
+      // Deduct sequentially starting from the first overdue item
+      for (let i = 0; i < state.overdue.length && toPay > 0; i++) {
+        const itemAmt = Number(state.overdue[i].amount) || 0;
+        if (itemAmt <= toPay) {
+          toPay -= itemAmt;
+          state.overdue[i].amount = 0;
+          state.overdue[i].status = 'Paid';
+        } else {
+          state.overdue[i].amount = itemAmt - toPay;
+          state.overdue[i].status = 'Partially Paid';
+          toPay = 0;
+        }
+      }
+
+      // Remove items that reached 0
+      state.overdue = state.overdue.filter(item => item.amount > 0);
+      saveState();
+      render();
     }
 
     function renderPaydayCalculations() {
@@ -599,6 +782,8 @@
       document.getElementById('splitLiving').textContent = fmt(safeCash * 0.60);
       document.getElementById('splitHoliday').textContent = fmt(safeCash * 0.25);
       document.getElementById('splitBuffer').textContent = fmt(safeCash * 0.15);
+
+      renderOverdueAdviseSection(netCash, data.days);
     }
 
     function renderBonusView() {
@@ -609,7 +794,7 @@
       document.getElementById('bonusHusbInc').value = b.husbInc;
 
       const totalBonus = (Number(b.you13) || 0) + (Number(b.youInc) || 0) + (Number(b.husb13) || 0) + (Number(b.husbInc) || 0);
-      const totalOverdue = state.overdue.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+      const totalOverdue = getTotalOverdueAmount();
 
       document.getElementById('totalBonusDisplay').textContent = fmt(totalBonus);
       document.getElementById('bonusVsOverdue').textContent = fmt(totalOverdue);
@@ -628,6 +813,10 @@
       const container = document.getElementById('overdueContainer');
       container.innerHTML = '';
       let total = 0;
+
+      if (state.overdue.length === 0) {
+        container.innerHTML = `<div class="text-center py-6 text-xs text-slate-400">Walang nakalistang pending o overdue loans. I-click ang "+ Add Pending" kung may idadagdag.</div>`;
+      }
 
       state.overdue.forEach(item => {
         total += Number(item.amount) || 0;
@@ -662,6 +851,25 @@
     }
 
     function render() {
+      const mFull = state.selectedMonth || 'December';
+      const mShort = MONTH_SHORT[mFull] || 'Dec';
+      document.getElementById('monthSelector').value = mFull;
+
+      // Update Tab Labels dynamically based on selectedMonth
+      const tabConfigs = [
+        { key: 'dec5', num: '1', day: '5', owner: '(You)' },
+        { key: 'dec15', num: '2', day: '15', owner: '(Husband)' },
+        { key: 'dec20', num: '3', day: '20', owner: '(You)' },
+        { key: 'dec30', num: '4', day: '30', owner: '(Husband)' }
+      ];
+
+      tabConfigs.forEach(tc => {
+        const el = document.getElementById('tab-' + tc.key);
+        if (el) {
+          el.textContent = `${tc.num}. ${mShort} ${tc.day} Sahod ${tc.owner}`;
+        }
+      });
+
       ['dec5', 'dec15', 'dec20', 'dec30', 'bonus', 'overdue'].forEach(t => {
         const el = document.getElementById('tab-' + t);
         if (el) {
@@ -692,14 +900,20 @@
 
       paydayView.classList.remove('hidden');
       const data = state.paydays[state.activeTab];
+      const dayNum = data.dayNum || '5';
+      const ownerSuffix = data.ownerLabel === '(Husband)' ? ' (Husband)' : '';
 
       document.getElementById('paydayBadge').textContent = data.badge;
-      document.getElementById('daysCoverLabel').textContent = data.daysText;
-      document.getElementById('paydayTitle').textContent = data.title;
+      document.getElementById('daysCoverLabel').textContent = `Covers ${data.days} days (${mShort} ${data.rangeText || ''})`;
+      document.getElementById('paydayTitle').textContent = `${mFull} ${dayNum} Salary${ownerSuffix}`;
       document.getElementById('salaryInput').value = data.salary;
 
       const container = document.getElementById('billsContainer');
       container.innerHTML = '';
+
+      if (data.bills.length === 0) {
+        container.innerHTML = `<div class="text-center py-6 text-xs text-slate-400">Walang nakalistang bills sa cutoff na ito. I-click ang "+ Add Bill" para magdagdag.</div>`;
+      }
 
       data.bills.forEach(bill => {
         const impact = getBillCashImpact(bill);
@@ -765,7 +979,10 @@
       const tab = state.activeTab;
       if (!state.paydays[tab]) return;
       const data = state.paydays[tab];
-      let lines = [`EMIJRD ONLINE SERVICES — ${data.title.toUpperCase()}`, `Sahod: ${fmt(data.salary)}`, `---`];
+      const mFull = state.selectedMonth || 'December';
+      const titleText = `${mFull} ${data.dayNum || ''} Salary`.toUpperCase();
+
+      let lines = [`EMIJRD ONLINE SERVICES — ${titleText}`, `Sahod: ${fmt(data.salary)}`, `---`];
       let out = 0, inc = 0;
 
       data.bills.forEach(b => {
@@ -783,6 +1000,13 @@
 
       const net = data.salary - out + inc;
       lines.push(`---`, `Totoong Matitira sa Kamay: ${fmt(net)}`);
+
+      const controlsVisible = !document.getElementById('overdueAdviseControls').classList.contains('hidden');
+      if (controlsVisible) {
+        const advisePay = Number(document.getElementById('advisePayInput').value) || 0;
+        const remOverdue = Math.max(0, getTotalOverdueAmount() - advisePay);
+        lines.push(`Advised Overdue Payment: ${fmt(advisePay)} (Remaining Overdue: ${fmt(remOverdue)})`);
+      }
 
       navigator.clipboard.writeText(lines.join('\n'));
       const btn = document.getElementById('copyBtn');
